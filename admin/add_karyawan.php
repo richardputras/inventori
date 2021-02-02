@@ -25,6 +25,8 @@ include('cekadmin.php');
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
     <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.css">
+    <script src="https://cdn.rawgit.com/igorescobar/jQuery-Mask-Plugin/1ef022ab/dist/jquery.mask.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <style>
         .breadcrumb {
@@ -88,6 +90,7 @@ include('cekadmin.php');
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -133,13 +136,17 @@ include('cekadmin.php');
 
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-                                    $nama = input($_POST['fn']);
+                                    $namadepan = input($_POST['fn']);
+                                    $namatengah = input($_POST['mn']);
+                                    $namabelakang = input($_POST['ln']);
                                     $nip = input($_POST['nip']);
                                     $nik = input($_POST['nik']);
                                     $jk = input($_POST['jk']);
                                     $tl = input($_POST['tl']);
                                     $tgllahir = input($_POST['tgl_lahir']);
                                     $alamat = input($_POST['alamat']);
+                                    $alamat2 = input($_POST['alamat2']);
+                                    $rt_rw = input($_POST['rt']);
                                     $kode_pos = input($_POST['kode_pos']);
                                     $provinsi = input($_POST['provinsi']);
                                     $kabupaten = input($_POST['kabupaten']);
@@ -168,32 +175,57 @@ include('cekadmin.php');
                                     $tipe_file = $_FILES['foto_kk']['type'];
                                     $tmp_file = $_FILES['foto_kk']['tmp_name'];
 
+                                    $nama_file4 = $_FILES['foto_npwp']['name'];
+                                    $ukuran_file = $_FILES['foto_npwp']['size'];
+                                    $tipe_file = $_FILES['foto_npwp']['type'];
+                                    $tmp_file = $_FILES['foto_npwp']['tmp_name'];
+
+                                    $nama_file5 = $_FILES['foto_ijazah']['name'];
+                                    $ukuran_file = $_FILES['foto_ijazah']['size'];
+                                    $tipe_file = $_FILES['foto_ijazah']['type'];
+                                    $tmp_file = $_FILES['foto_ijazah']['tmp_name'];
+
                                     $path = '../gambar/' . $nama_file1;
                                     $path = '../gambar/' . $nama_file2;
                                     $path = '../gambar/' . $nama_file3;
+                                    $path = '../gambar/' . $nama_file4;
+                                    $path = '../gambar/' . $nama_file5;
 
                                     if ($ukuran_file <= 2000000) { // Cek apakah ukuran file yang diupload kurang dari sama dengan 1MB
                                         // Jika ukuran file kurang dari sama dengan 2MB, lakukan :
                                         // Proses upload
-                                        if (move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
-                                            // Jika gambar berhasil diupload, Lakukan :  
-                                            // Proses simpan ke Database
-
-                                            //Query input menginput data kedalam tabel karyawan
-                                            $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama = '$nama', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
-                                                alamat = '$alamat', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_corporate = '$emailc', 
-                                                nomor_hp = '$noHP', nomor_telp_rmh = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', pas_foto = '" . $nama_file1 . "', foto_ktp = '" . $nama_file2 . "', 
-                                                foto_kk = '" . $nama_file3 . "', id_jabatan = '$jbt' ";
+                                        if(empty($nama_file1) || empty($nama_file2) || empty($nama_file3) || empty($nama_file4) || empty($nama_file5)){
+                                            $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+                                                alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_kantor = '$emailc', 
+                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', id_jabatan = '$jbt' ";
                                             $hasil = mysqli_query($koneksi, $sql);
 
                                             if ($hasil) {
                                                 echo "<script> alert('Selamat, data $nama berhasil ditambahkan.');
                                                       window.location.href = 'karyawan.php'; </script>";
-                                            } else {
-                                                echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
                                             }
-                                        } else {
-                                            echo "Maaf, Gambar gagal untuk diupload.";
+                                        } 
+                                        else{
+                                            if (move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
+                                                // Jika gambar berhasil diupload, Lakukan :  
+                                                // Proses simpan ke Database
+
+                                                //Query input menginput data kedalam tabel karyawan
+                                                $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+                                                alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_kantor = '$emailc', 
+                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', pas_foto = '" . $nama_file1 . "', foto_ktp = '" . $nama_file2 . "',  
+                                                foto_kk = '" . $nama_file3 . "', foto_npwp = '" . $nama_file4 . "', foto_ijazah = '" . $nama_file5 . "', id_jabatan = '$jbt' ";
+                                                $hasil = mysqli_query($koneksi, $sql);
+
+                                                if ($hasil) {
+                                                echo "<script> alert('Selamat, data $nama berhasil ditambahkan.');
+                                                      window.location.href = 'karyawan.php'; </script>";
+                                                } else {
+                                                echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
+                                                }
+                                            } else {
+                                                echo "Maaf, Gambar gagal untuk diupload.";
+                                            }
                                         }
                                     } else {
                                         echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 2MB";
@@ -205,28 +237,36 @@ include('cekadmin.php');
                                 <form role="form" method="POST" autocomplete="on" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <div class="form-row">
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-3">
                                                 <label for="nik">Nomor Induk Pegawai (NIP):</label>
                                                 <input type="text" name="nip" class="form-control" placeholder="NIP">
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="fn">Nama Lengkap:</label>
-                                                <input type="text" name="fn" class="form-control" placeholder="Nama Lengkap" required>
+                                            <div class="form-group col-md-3">
+                                                <label for="fn">Nama Depan:</label>
+                                                <input type="text" name="fn" class="form-control" placeholder="Nama Depan" required>
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="nik">Nomor Induk Kependudukan (NIK):</label>
-                                                <input type="text" name="nik" class="form-control" placeholder="NIK" required>
+                                            <div class="form-group col-md-3">
+                                                <label for="nik">Nama Tengah:</label>
+                                                <input type="text" name="mn" class="form-control" placeholder="Nama Tengah">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="nik">Nama Belakang:</label>
+                                                <input type="text" name="ln" class="form-control" placeholder="Nama Belakang" required>
                                             </div>
                                         </div>
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
+                                            <div class="form-group col-md-3">
+                                                <label for="nik">Nomor Induk Kependudukan (NIK):</label>
+                                                <input type="text" name="nik" class="form-control" placeholder="NIK" required>
+                                            </div>
+                                            <div class="form-group col-md-3">
                                                 <label for="tl">Tempat Lahir:</label>
                                                 <input type="text" name="tl" class="form-control" placeholder="Tempat Lahir">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="tgl_lahir">Tanggal Lahir:</label>
-                                                <input type="date" data-date-format="DD MMMM YYYY" name="tgl_lahir" class="form-control" placeholder="Tanggal Lahir">
+                                                <input type="date" name="tgl_lahir" class="form-control" placeholder="Tanggal Lahir">
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="jk">Jenis Kelamin:</label>
@@ -244,16 +284,16 @@ include('cekadmin.php');
                                                 <input type="email" name="p_email" class="form-control" placeholder="Email Pribadi">
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label for="c_email">Email Corporate:</label>
-                                                <input type="email" name="c_email" class="form-control" placeholder="Email Corporate">
+                                                <label for="c_email">Email Kantor:</label>
+                                                <input type="email" name="c_email" class="form-control" placeholder="Email Kantor">
                                             </div>
                                             <div class="form-group col-3">
-                                                <label for="handphone">Nomor HP:</label>
-                                                <input type="tel" name="handphone" class="form-control" placeholder="HP">
+                                                <label for="handphone">Nomor HP Pribadi:</label>
+                                                <input type="tel" name="handphone" id="handphone" class="form-control" placeholder="HP Pribadi" required>
                                             </div>
                                             <div class="form-group col-3">
-                                                <label for="phone">Nomor Telp Rumah:</label>
-                                                <input type="tel" name="phone" class="form-control" placeholder="Telp Rumah">
+                                                <label for="phone">Nomor HP Kantor:</label>
+                                                <input type="tel" name="phone" id="phone" class="form-control" placeholder="HP Kantor">
                                             </div>
                                         </div>
 
@@ -262,7 +302,7 @@ include('cekadmin.php');
                                                 <label for="status">Status:</label>
                                                 <select class="form-control" name="status">
                                                     <option>-- Pilih --</option>
-                                                    <option value="Single">Single</option>
+                                                    <option value="Lajang">Lajang</option>
                                                     <option value="Menikah">Menikah</option>
                                                     <option value="Cerai">Cerai</option>
                                                 </select>
@@ -294,8 +334,16 @@ include('cekadmin.php');
 
                                         <div class="form-row">
                                             <div class="form-group col-md-4">
-                                                <label for="alamat">Alamat Sekarang:</label>
-                                                <textarea id="alamat" name="alamat" class="form-control" placeholder="Alamat sekarang" rows="2"></textarea>
+                                                <label for="alamat">Alamat (Sesuai KTP):</label>
+                                                <textarea id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="alamat">Alamat (Alternatif):</label>
+                                                <textarea id="alamat" name="alamat2" class="form-control" placeholder="Alamat Alternatif"></textarea>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="kode_pos">RT/RW:</label>
+                                                <input type="text" name="rt" class="form-control" placeholder="RT/RW">
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label for="kode_pos">Kode Pos:</label>
@@ -322,7 +370,7 @@ include('cekadmin.php');
                                                 </select>
                                             </div>
                                             <div class="form-group col-sm-4">
-                                                <label>Kabupaten:</label>
+                                                <label>Kabupaten/Kota:</label>
                                                 <select class="form-control" name="kabupaten" id="kabupaten">
                                                     <!-- Kabupaten akan diload menggunakan ajax, dan ditampilkan disini -->
                                                 </select>
@@ -369,21 +417,25 @@ include('cekadmin.php');
                                         </script>
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-2.4">
                                                 <label>Pas Foto</label>
                                                 <input type="file" class="form-control-file" name="pas_foto">
                                             </div>
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-2.4">
                                                 <label>Foto KTP</label>
                                                 <input type="file" class="form-control-file" name="foto_ktp">
                                             </div>
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-2.4">
                                                 <label>Foto KK</label>
                                                 <input type="file" class="form-control-file" name="foto_kk">
                                             </div>
-                                            <div class="form-group col-md-3">
-                                                <label>Foto NPWP</label>
+                                            <div class="form-group col-md-2.4">
+                                                <label>Foto NPWP (Optional)</label>
                                                 <input type="file" class="form-control-file" name="foto_npwp">
+                                            </div>
+                                            <div class="form-group col-md-2.4">
+                                                <label>Foto Ijazah</label>
+                                                <input type="file" class="form-control-file" name="foto_ijazah">
                                             </div>
                                         </div>
                                     </div>
@@ -413,6 +465,13 @@ include('cekadmin.php');
             </footer>
         </div>
     </div>
+    <!-- <script type="text/javascript">
+        $(document).ready(function(){
+            // Format nomor HP.
+        $( '#handphone' ).mask('0000âˆ’0000âˆ’0000');
+        })
+    </script> -->
+
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>
     <!-- JS Libraies -->
