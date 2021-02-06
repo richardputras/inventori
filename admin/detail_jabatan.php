@@ -28,7 +28,7 @@ if ($_POST['id']) {
 				   <td>' . $row_view['divisi'] . '</td>
 			   </tr>
             <tr>
-				   <th>JOB DESK</th>
+				   <th>JOB DESC</th>
 				   <td>' . $row_view['job_desc'] . '</td>
 			   </tr>
 			   <tr>
@@ -61,7 +61,7 @@ if ($_POST['id']) {
             </tr>
             <tr>
 				   <th>TGL KENAIKAN GAJI</th>
-				   <td>' . date('d F Y', strtotime($row_view['tgl_naik_gaji'])) . '</td>
+				   <td>' . $row_view['tgl_naik_gaji'] . '</td>
             </tr>
 		    </table>
         ';

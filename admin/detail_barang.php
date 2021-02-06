@@ -7,7 +7,7 @@ if ($_POST['id']) {
    //membuat variabel id berisi post['id']
    $id = $_POST['id'];
    //query standart select where id
-   $view = "SELECT * FROM barang WHERE id_barang='$id'";
+   $view = "SELECT * FROM barang b INNER JOIN supplier s WHERE b.id_supplier = s.id_supplier AND id_barang='$id'";
    // mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
    $result = mysqli_query($koneksi, $view);
    $number = mysqli_num_rows($result);
@@ -28,16 +28,16 @@ if ($_POST['id']) {
                <td>' . $row_view['nama_barang'] . '</td>
             </tr>
             <tr>
-               <th>HARGA BELI</th>
-               <td>' . "IDR" . ' ' . number_format($row_view['harga_beli'], 2, ",", ".") . '</td>
-            </tr>
-            <tr>
-               <th>HARGA JUAL</th>
-               <td>' . "IDR" . ' ' . number_format($row_view['harga_jual'], 2, ",", ".") . '</td>
-            </tr>
-            <tr>
 				   <th>DESKRIPSI BARANG</th>
 				   <td>' . $row_view['deskripsi'] . '</td>
+            </tr>
+            <tr>
+				   <th>JUMLAH</th>
+				   <td>' . $row_view['qty'] . '</td>
+            </tr>
+            <tr>
+				   <th>SATUAN</th>
+				   <td>' . $row_view['satuan'] . '</td>
             </tr>
             <tr>
 				   <th>TGL. BAYAR</th>
@@ -46,6 +46,14 @@ if ($_POST['id']) {
             <tr>
 				   <th>TGL. TERIMA BARANG</th>
 				   <td>' . date('d F Y', strtotime($row_view['tgl_terima'])) . '</td>
+            </tr>
+            <tr>
+               <th>HARGA BELI</th>
+               <td>' . "IDR" . ' ' . number_format($row_view['harga_beli'], 2, ",", ".") . '</td>
+            </tr>
+            <tr>
+               <th>HARGA JUAL</th>
+               <td>' . "IDR" . ' ' . number_format($row_view['harga_jual'], 2, ",", ".") . '</td>
             </tr>
             <tr>
 				   <th>KONDISI BARANG</th>
@@ -59,7 +67,10 @@ if ($_POST['id']) {
 				   <th>GARANSI</th>
 				   <td>' . $row_view['garansi'] . '</td>
 			   </tr>
-			   
+			   <tr>
+				   <th>SUPPLIER</th>
+				   <td>' . $row_view['nama_supplier'] . '</td>
+			   </tr>
 		    </table>
         ';
       }

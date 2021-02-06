@@ -7,7 +7,7 @@ if ($_POST['id']) {
    //membuat variabel id berisi post['id']
    $id = $_POST['id'];
    //query standart select where id
-   $view = "SELECT * FROM karyawan WHERE id='$id'";
+   $view = "SELECT * FROM karyawan k INNER JOIN jabatan j WHERE k.id_jabatan = j.id_jabatan AND id='$id'";
    // mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
    $result = mysqli_query($koneksi, $view);
    $number = mysqli_num_rows($result);
@@ -68,6 +68,10 @@ if ($_POST['id']) {
 				   <td>' . $row_view['nomor_hp_kantor'] . '</td>
             </tr>
             <tr>
+				   <th>JABATAN</th>
+				   <td>' . $row_view['nama_jabatan'] . '</td>
+            </tr>
+            <tr>
 				   <th>STATUS</th>
 				   <td>' . $row_view['status'] . '</td>
             </tr>
@@ -80,10 +84,6 @@ if ($_POST['id']) {
 				   <td>' . $row_view['alamat'] . '</td>
             </tr>
             <tr>
-				   <th>ALAMAT ALTERNATIF</th>
-				   <td>' . $row_view['alamat_alternatif'] . '</td>
-            </tr>
-            <tr>
 				   <th>RT/RW</th>
 				   <td>' . $row_view['rt_rw'] . '</td>
             </tr>
@@ -91,7 +91,10 @@ if ($_POST['id']) {
 				   <th>KODE POS</th>
 				   <td>' . $row_view['kode_pos'] . '</td>
             </tr>
-            
+            <tr>
+				   <th>ALAMAT (ALTERNATIF)</th>
+				   <td>' . $row_view['alamat_alternatif'] . '</td>
+            </tr>
 		    </table>
         ';
       }

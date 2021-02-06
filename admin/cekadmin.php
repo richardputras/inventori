@@ -3,9 +3,11 @@
 session_start();
 
 if(!isset($_SESSION['username'])){
-    die("Anda belum login!");
+    echo "<script> alert('Anda belum login!');
+         window.location.href = '../index.php'; </script>";
 }
 
 if($_SESSION['role']!="Admin"){
-    die("Anda bukan admin!");
+    echo "<script> alert('Anda bukan admin!');
+         window.location.href = '../index.php'; </script>";
 }

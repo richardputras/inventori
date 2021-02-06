@@ -204,6 +204,9 @@ include('cekadmin.php');
                                                 echo "<script> alert('Selamat, data $nama berhasil ditambahkan.');
                                                       window.location.href = 'karyawan.php'; </script>";
                                             }
+                                            else {
+                                                echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);
+                                            }
                                         } 
                                         else{
                                             if (move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
@@ -300,14 +303,14 @@ include('cekadmin.php');
                                         <div class="form-row">
                                             <div class="form-group col-md-3">
                                                 <label for="status">Status:</label>
-                                                <select class="form-control" name="status">
+                                                <select class="form-control" id="status" name="status">
                                                     <option>-- Pilih --</option>
                                                     <option value="Lajang">Lajang</option>
                                                     <option value="Menikah">Menikah</option>
                                                     <option value="Cerai">Cerai</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-3" id="anak" style="display: none;">
                                                 <label for="anak">Jumlah Anak:</label>
                                                 <input type="number" name="anak" class="form-control" placeholder="Jumlah Anak">
                                             </div>
@@ -337,10 +340,6 @@ include('cekadmin.php');
                                                 <label for="alamat">Alamat (Sesuai KTP):</label>
                                                 <textarea id="alamat" name="alamat" class="form-control" placeholder="Alamat"></textarea>
                                             </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="alamat">Alamat (Alternatif):</label>
-                                                <textarea id="alamat" name="alamat2" class="form-control" placeholder="Alamat Alternatif"></textarea>
-                                            </div>
                                             <div class="form-group col-md-2">
                                                 <label for="kode_pos">RT/RW:</label>
                                                 <input type="text" name="rt" class="form-control" placeholder="RT/RW">
@@ -348,6 +347,10 @@ include('cekadmin.php');
                                             <div class="form-group col-md-2">
                                                 <label for="kode_pos">Kode Pos:</label>
                                                 <input type="text" name="kode_pos" class="form-control" placeholder="Kode Pos">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="alamat">Alamat (Alternatif):</label>
+                                                <textarea id="alamat" name="alamat2" class="form-control" placeholder="Alamat Alternatif"></textarea>
                                             </div>
                                         </div>
 
@@ -465,12 +468,21 @@ include('cekadmin.php');
             </footer>
         </div>
     </div>
-    <!-- <script type="text/javascript">
-        $(document).ready(function(){
-            // Format nomor HP.
-        $( '#handphone' ).mask('0000âˆ’0000âˆ’0000');
-        })
-    </script> -->
+
+    <script src="../assets/js/jquery-3.2.1.min.js"></script>
+    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
+    <script type="text/javascript">
+    $(function () {
+        $("#status").change(function () {
+            if ($(this).val() == "Menikah" || $(this).val() == "Cerai") {
+                $("#anak").show();
+            } 
+            else{
+                $("#anak").hide();
+            }
+        });
+    });
+    </script>
 
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>

@@ -3,6 +3,7 @@
 session_start();
 error_reporting(0);
 include "koneksi.php";
+include('admin/cekadmin.php');
 
 if (isset($_POST['submit'])) {
   $_SESSION['submit'] = '';

@@ -56,11 +56,14 @@ include('cekadmin.php');
             <nav class="navbar navbar-expand-lg main-navbar sticky">
                 <div class="form-inline mr-auto">
                     <ul class="navbar-nav mr-3">
-                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
+                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn"> 
+                                <i data-feather="align-justify"></i>
+                            </a>
+                        </li>
                         <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
                                 <i data-feather="maximize"></i>
-                            </a></li>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <ul class="navbar-nav navbar-right">
@@ -81,13 +84,20 @@ include('cekadmin.php');
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
+                                <span>Data Master</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -132,7 +142,6 @@ include('cekadmin.php');
                                                         <th class="text-center">Foto Barang</th>
                                                         <th class="text-center">Tgl. Bayar</th>
                                                         <th class="text-center">Penanggung Jawab</th>
-                                                        <th class="text-center">Detail Data</th>
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
                                                 </thead>
@@ -142,6 +151,7 @@ include('cekadmin.php');
                                                     include '../koneksi.php';
                                                     $query = "SELECT * FROM barang b INNER JOIN karyawan k ON b.id_pemegang = k.id ORDER BY id_barang ASC";
                                                     $result = mysqli_query($koneksi, $query);
+                                                   
                                                     $no = 1;
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                     ?>
@@ -152,8 +162,10 @@ include('cekadmin.php');
                                                             <td align="center"><img src="../gambar/<?php echo $row['foto'] ?>" width="100"></td>
                                                             <td align="center"><?= date('d F Y', strtotime($row['tgl_bayar'])); ?></td>
                                                             <td align="center"><?php echo $row['nama_depan']; echo $row['nama_belakang']; ?></td>
-                                                            <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_barang']; ?>">Detail</td>
                                                             <td align="center">
+                                                                <a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_barang']; ?>">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatebarang<?php echo $row['id_barang']; ?>">
                                                                     <i class="fa fa-edit"></i>
                                                                 </a>
@@ -213,6 +225,39 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Deskripsi
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <textarea class="form-control" name="deskripsi"><?php echo $row['deskripsi']; ?></textarea>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Jumlah
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number" class="form-control" name="qty" value="<?php echo $row['qty']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Satuan
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <select name="satuan" class="form-control select2">
+                                                                                                    <option>-- Pilih --</option>
+                                                                                                    <option value="Unit">Unit</option>
+                                                                                                    <option value="Pcs">Pcs</option>
+                                                                                                    <option value="Box">Box</option>
+                                                                                                    <option value="DLL">DLL</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
                                                                                             <label class="col-sm-4 col-form-label">Harga Beli
                                                                                             </label>
                                                                                             <div class="col-sm-8">
@@ -226,15 +271,6 @@ include('cekadmin.php');
                                                                                             </label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="number" class="form-control" name="hargajual" value="<?php echo $row['harga_jual']; ?>">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Deskripsi
-                                                                                            </label>
-                                                                                            <div class="col-sm-8">
-                                                                                                <textarea class="form-control" name="deskripsi"><?php echo $row['deskripsi']; ?></textarea>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -336,7 +372,7 @@ include('cekadmin.php');
                                                                                     <label class="col-sm-4 col-form-label">Kode Barang
                                                                                     </label>
                                                                                     <div class="col-sm-8">
-                                                                                        <input type="text" class="form-control" name="kode" placeholder="Kode Barang" required>
+                                                                                        <input type="text" class="form-control" name="kode" placeholder="Kode Barang">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -351,28 +387,34 @@ include('cekadmin.php');
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <div class="row">
-                                                                                    <label class="col-sm-4 col-form-label">Harga Beli
-                                                                                    </label>
-                                                                                    <div class="col-sm-8">
-                                                                                        <input type="number" class="form-control" name="hargabeli" value="<?php echo $row['harga_beli']; ?>">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <div class="row">
-                                                                                    <label class="col-sm-4 col-form-label">Harga Jual
-                                                                                    </label>
-                                                                                    <div class="col-sm-8">
-                                                                                        <input type="number" class="form-control" name="hargajual" value="<?php echo $row['harga_jual']; ?>">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <div class="row">
                                                                                     <label class="col-sm-4 col-form-label">Deskripsi
                                                                                     </label>
                                                                                     <div class="col-sm-8">
                                                                                         <textarea class="form-control" name="deskripsi" placeholder="Deskripsi Barang"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-sm-4 col-form-label">Jumlah
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number" class="form-control" name="qty" placeholder="Jumlah">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-sm-4 col-form-label">Satuan
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <select name="satuan" class="form-control select2">
+                                                                                            <option>-- Pilih --</option>
+                                                                                            <option value="Unit">Unit</option>
+                                                                                            <option value="Pcs">Pcs</option>
+                                                                                            <option value="Box">Box</option>
+                                                                                            <option value="DLL">DLL</option>
+                                                                                        </select>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -407,7 +449,7 @@ include('cekadmin.php');
                                                                                     <label class="col-sm-4 col-form-label">Kondisi Barang
                                                                                     </label>
                                                                                     <div class="col-sm-8">
-                                                                                        <select name="kondisi" class="form-control select2">
+                                                                                        <select name="kondisi" id="kondisi" class="form-control select2">
                                                                                             <option>-- Pilih --</option>
                                                                                             <option value="Berfungsi baik">Berfungsi Baik</option>
                                                                                             <option value="Perlu perbaikan">Perlu Perbaikan</option>
@@ -422,7 +464,7 @@ include('cekadmin.php');
                                                                                     <label class="col-sm-4 col-form-label">Status Barang
                                                                                     </label>
                                                                                     <div class="col-sm-8">
-                                                                                        <select name="status" class="form-control select2">
+                                                                                        <select name="status" id="status" class="form-control select2">
                                                                                             <option>-- Pilih --</option>
                                                                                             <option value="Beli bekas">Beli Bekas</option>
                                                                                             <option value="Beli baru">Beli Baru</option>
@@ -431,6 +473,42 @@ include('cekadmin.php');
                                                                                             <option value="Perlu dijual">Perlu Dijual</option>
                                                                                             <option value="Terjual">Terjual</option>
                                                                                         </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row" id="hargabeli" style="display: none;">
+                                                                                    <label class="col-sm-4 col-form-label">Harga Beli
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number" class="form-control" name="hargabeli" placeholder="Harga Beli">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row" id="hargajual" style="display: none;">
+                                                                                    <label class="col-sm-4 col-form-label">Harga Jual
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number" class="form-control" name="hargajual" placeholder="Harga Jual">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row" id="ekshargajual" style="display: none;">
+                                                                                    <label class="col-sm-4 col-form-label">Ekspetasi Harga Jual
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number" class="form-control" name="ekshargajual" placeholder="Ekspetasi Harga Jual">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row" id="perbaikan" style="display: none;">
+                                                                                    <label class="col-sm-4 col-form-label">Jadwal Perbaikan
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="date" class="form-control" name="perbaikan">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -448,13 +526,32 @@ include('cekadmin.php');
                                                                                     <label class="col-sm-4 col-form-label">Penanggung Jawab
                                                                                     </label>
                                                                                     <div class="col-sm-8">
-                                                                                        <select class="form-control select2" name="pemegang">
+                                                                                        <select name="pemegang" class="form-control select2">
                                                                                             <option>-- Pilih --</option>
                                                                                             <?php
                                                                                             $sql = mysqli_query($koneksi, "SELECT * FROM karyawan ORDER BY id ASC");
                                                                                             while ($data = mysqli_fetch_assoc($sql)) {
                                                                                             ?>
                                                                                                 <option value="<?= $data['id']; ?>"><?= $data['nama_depan'] ?></option>
+                                                                                            <?php
+                                                                                            }
+                                                                                            ?>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-sm-4 col-form-label">Supplier
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <select name="supplier" class="form-control select2">
+                                                                                            <option>-- Pilih --</option>
+                                                                                            <?php
+                                                                                            $sql = mysqli_query($koneksi, "SELECT * FROM supplier ORDER BY id_supplier ASC");
+                                                                                            while ($data = mysqli_fetch_assoc($sql)) {
+                                                                                            ?>
+                                                                                                <option value="<?= $data['id_supplier']; ?>"><?= $data['nama_supplier'] ?></option>
                                                                                             <?php
                                                                                             }
                                                                                             ?>
@@ -497,11 +594,50 @@ include('cekadmin.php');
                     </div>
                 </div>
             </div>
+            <footer class="main-footer">
+                <div class="footer-left">
+                    <footer>&copy; Copyright 2020 PT. SAKTI</footer>
+                </div>
+            </footer>
         </div>
     </div>
 
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
     <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    $(function () {
+        $("#status").change(function () {
+            if ($(this).val() == "Beli baru" || $(this).val() == "Beli bekas") {
+                $("#hargabeli").show();
+                $("#hargajual").hide();
+                $("#ekshargajual").hide();
+            } else if ($(this).val() == "Perlu dijual") {
+                $("#hargabeli").hide();
+                $("#hargajual").hide();
+                $("#ekshargajual").show();
+            } else if ($(this).val() == "Terjual"){
+                $("#hargabeli").hide();
+                $("#hargajual").show();
+                $("#ekshargajual").hide();
+            }
+            else{
+                $("#hargabeli").hide();
+                $("#hargajual").hide();
+                $("#ekshargajual").hide();
+            }
+        });
+        $("#kondisi").change(function () {
+            if ($(this).val() == "Perlu perbaikan"){
+                $("#perbaikan").show();
+            }
+            else{
+                $("#perbaikan").hide();
+            }
+        });
+    });
+    </script>
+    
     <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
     <script>
         // ini menyiapkan dokumen agar siap grak :)

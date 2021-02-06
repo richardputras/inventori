@@ -127,12 +127,20 @@ include('admin/cekadmin.php');
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
+                                <span>Data Master</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="admin/user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="admin/karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="admin/jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="admin/barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="admin/supplier.php">Data Supplier</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="admin/perbaikan.php">Perbaikan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -164,7 +172,7 @@ include('admin/cekadmin.php');
                                 <span class="message"><span class="arrow"></span>
                                     <span class="from">
                                         <h2>
-                                            <script language="JavaScript">
+                                            <script language="javascript">
                                                 var d = new Date();
                                                 var h = d.getHours();
                                                 if (h < 11) {
@@ -231,11 +239,9 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlOpt FROM user");
                                                         $opt = $sql->fetch_assoc();
                                                         ?>
-                                                        <a onclick="location.href='admin/user.php'">
                                                             <h5 class="font-15">Total Pengguna</h5>
-                                                        </a>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
-                                                        <p class="mb-0"><span class="col-green"></span></p>
+                                                        <p class="mb-0"><a href='admin/user.php'>Lihat Detail</a></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -262,7 +268,7 @@ include('admin/cekadmin.php');
                                                         ?>
                                                         <h5 class="font-15">Total Karyawan</h5>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
-                                                        <p class="mb-0"><span class="col-orange"></span> </p>
+                                                        <p class="mb-0"><a href='admin/karyawan.php' style="color: green;">Lihat Detail</a></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -284,12 +290,12 @@ include('admin/cekadmin.php');
                                                     <div class="card-content">
                                                         <?php
                                                         include "koneksi.php";
-                                                        $sql = $koneksi->query("SELECT COUNT(*) AS jmlStok FROM stok_barang");
+                                                        $sql = $koneksi->query("SELECT COUNT(*) AS jmlStok FROM barang");
                                                         $stok = $sql->fetch_assoc();
                                                         ?>
-                                                        <h5 class="font-15">Total Barang</h5>
+                                                        <h5 class="font-16">Total Barang</h5>
                                                         <h2 class="mb-3 font-18"><?= $stok['jmlStok']; ?></h2>
-                                                        <p class="mb-0"><span class="col-green"></span></p>
+                                                        <p class="mb-0"><a href='admin/barang.php'>Lihat Detail</a></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -302,6 +308,7 @@ include('admin/cekadmin.php');
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </section>
