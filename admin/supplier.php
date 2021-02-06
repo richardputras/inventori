@@ -11,7 +11,7 @@ include('cekadmin.php');
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Halaman Pengguna</title>
+  <title>Halaman Supplier</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../assets/css/app.min.css">
   <link rel="stylesheet" href="../assets/bundles/datatables/dataTables.min.css">
@@ -49,6 +49,30 @@ include('cekadmin.php');
 </head>
 
 <body>
+  <?php
+  include '../koneksi.php';
+
+  $carikode = mysqli_query($koneksi, "SELECT kode_supplier from supplier") or die (mysqli_error($koneksi));
+  // menjadikannya array
+  $datakode = mysqli_fetch_array($carikode);
+  $jumlah_data = mysqli_num_rows($carikode);
+  // jika $datakode
+  if ($datakode) {
+    // membuat variabel baru untuk mengambil kode barang mulai dari 1
+    $nilaikode = substr($jumlah_data[0], 1);
+    // menjadikan $nilaikode ( int )
+    $kode = (int) $nilaikode;
+    // setiap $kode di tambah 1
+    $kode = $jumlah_data + 1;
+    // hasil untuk menambahkan kode 
+    // angka 3 untuk menambahkan tiga angka setelah B dan angka 0 angka yang berada di tengah
+    // atau angka sebelum $kode
+    $kode_otomatis = "SUP". "-" .str_pad($kode, 3, "0", STR_PAD_LEFT);
+  } else {
+    $kode_otomatis = "S0001";
+  }
+  ?>
+
   <div class="loader"></div>
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
@@ -115,8 +139,8 @@ include('cekadmin.php');
               <div class="col-12">
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Data Pengguna</h3>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adduser"><i class="fa fa-plus"></i>Tambah Data
+                    <h3>Data Supplier</h3>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addsupplier"><i class="fa fa-plus"></i>Tambah Data
                     </button>
                   </div>
                   <div class="card-body">
@@ -126,10 +150,9 @@ include('cekadmin.php');
                           <tr>
                             <th class="text-center">No.</th>
                             <th class="text-center">Nama</th>
-                            <th class="text-center">Username</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">No. HP</th>
-                            <th class="text-center">Hak Akses</th>
+                            <th class="text-center">Alamat</th>
+                            <th class="text-center">No. Telepon</th>
+                            <th class="text-center">Contact Person</th>
                             <th class="text-center">Opsi</th>
                           </tr>
                         </thead>
@@ -137,28 +160,29 @@ include('cekadmin.php');
                         <tbody>
                           <?php
                           include '../koneksi.php';
-                          $query = "SELECT * FROM user ORDER by id_user ASC";
+                          
+
+                          $query = "SELECT * FROM supplier";
                           $result = mysqli_query($koneksi, $query);
                           $no = 1;
-                          while ($row = mysqli_fetch_assoc($result)) {
+                          while ($row = mysqli_fetch_array($result)) {
                           ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
-                              <td align="center"><?php echo $row['name']; ?></td>
-                              <td align="center"><?php echo $row['username']; ?></td>
-                              <td align="center"><?php echo $row['email']; ?></td>
-                              <td align="center"><?php echo $row['telepon']; ?></td>
-                              <td align="center"><?php echo $row['role']; ?></td>
+                              <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_supplier']; ?>"><?php echo $row['nama_supplier']; ?></a></td>
+                              <td align="center"><?php echo $row['alamat']; ?></td>
+                              <td align="center"><?php echo "+62" . number_format($row['telepon'], 0, ".", "-"); ?></td>
+                              <td align="center"><?php echo $row['contact_person']; ?></td>
                               <td align="center">
-                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updateuser<?php echo $row['id_user']; ?>">
+                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatesupplier<?php echo $row['id_supplier']; ?>">
                                   <i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteuser<?php echo $row['id_user']; ?>">
+                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deletesupplier<?php echo $row['id_supplier']; ?>">
                                   <i class="fa fa-trash"></i></a>
                               </td>
 
                               <!-- modal delete -->
                               <div class="example-modal">
-                                <div id="deleteuser<?php echo $row['id_user']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
+                                <div id="deletesupplier<?php echo $row['id_supplier']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -169,7 +193,7 @@ include('cekadmin.php');
                                       </div>
                                       <div class="modal-footer">
                                         <button id="nodelete" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
-                                        <a href="function_user.php?act=deleteuser&id=<?php echo $row['id_user']; ?>" class="btn btn-primary">Delete</a>
+                                        <a href="function_supplier.php?act=deletesupplier&id=<?php echo $row['id_supplier']; ?>" class="btn btn-primary">Delete</a>
                                       </div>
                                     </div>
                                   </div>
@@ -177,65 +201,85 @@ include('cekadmin.php');
                               </div><!-- modal delete -->
 
                               <div class="example-modal">
-                                <div id="updateuser<?php echo $row['id_user']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
+                                <div id="updatesupplier<?php echo $row['id_supplier']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
-                                        <h3 class="modal-title">Edit Data User</h3>
+                                        <h3 class="modal-title">Edit Data Supplier</h3>
                                       </div>
 
-                                      <form action="function_user.php?act=updateuser" method="post" role="form">
+                                      <form action="function_supplier.php?act=updatesupplier" method="post" role="form">
                                         <div class="modal-body">
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Nama</label>
+                                              <label class="col-sm-4 col-form-label">Kode Supplier</label>
                                               <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="name" value="<?php echo $row['name']; ?>">
+                                                <input type="text" class="form-control" name="kode" value="<?php echo $row['kode_supplier']; ?>" readonly>
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Username</label>
+                                              <label class="col-sm-4 col-form-label">Nama Supplier</label>
                                               <div class="col-sm-8">
-                                                <input type="hidden" class="form-control" name="id_user" value="<?php echo $row['id_user']; ?>">
-                                                <input type="text" class="form-control" name="username" value="<?php echo $row['username']; ?>">
+                                                <input type="hidden" class="form-control" name="id_supplier" value="<?php echo $row['id_supplier']; ?>">
+                                                <input type="text" class="form-control" name="nama" value="<?php echo $row['nama_supplier']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Email</label>
+                                              <label class="col-sm-4 col-form-label">Alamat</label>
                                               <div class="col-sm-8">
-                                                <input type="email" class="form-control" name="email" value="<?php echo $row['email']; ?>">
+                                                <textarea class="form-control" name="alamat"><?php echo $row['alamat']; ?></textarea>
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Password</label>
+                                              <label class="col-sm-4 col-form-label">Kota</label>
                                               <div class="col-sm-8">
-                                                <input type="password" class="form-control" name="password" value="<?php echo $row['password']; ?>" readonly>
+                                                <input type="text" class="form-control" name="kota" value="<?php echo $row['kota']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Nomor HP</label>
+                                              <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                               <div class="col-sm-8">
-                                                <input type="tel" class="form-control" name="handphone" value="<?php echo $row['telepon']; ?>">
+                                                <input type="tel" class="form-control" name="phone" value="<?php echo $row['telepon']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Hak Akses</label>
+                                              <label class="col-sm-4 col-form-label">Bank</label>
                                               <div class="col-sm-8">
-                                                <select name="role" class="form-control select2" style="width: 100%;">
-                                                  <option>-- Pilih --</option>
-                                                  <option value="Admin">Admin</option>
-                                                  <option value="Kepala divisi">Kepala divisi</option>
-                                                </select>
+                                                <input type="text" class="form-control" name="bank" value="<?php echo $row['bank']; ?>">
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <div class="row">
+                                              <label class="col-sm-4 col-form-label">Nomor Rekening</label>
+                                              <div class="col-sm-8">
+                                                <input type="number" class="form-control" name="norek" value="<?php echo $row['no_rek']; ?>">
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <div class="row">
+                                              <label class="col-sm-4 col-form-label">Contact Person (CP)</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="cp" value="<?php echo $row['contact_person']; ?>">
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <div class="row">
+                                              <label class="col-sm-4 col-form-label">Nomor CP</label>
+                                              <div class="col-sm-8">
+                                                <input type="tel" class="form-control" name="nocp" value="<?php echo $row['no_contact_person']; ?>">
                                               </div>
                                             </div>
                                           </div>
@@ -256,62 +300,85 @@ include('cekadmin.php');
                   ?>
 
                   <div class="example-modal">
-                    <div id="adduser" class="modal fade" role="dialog" style="display:none;">
+                    <div id="addsupplier" class="modal fade" role="dialog" style="display:none;">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h3 class="modal-title">Tambah User Baru</h3>
+                            <h3 class="modal-title">Tambah Supplier Baru</h3>
                           </div>
-                          <form action="function_user.php?act=adduser" method="post" role="form">
+
+                          <form action="function_supplier.php?act=addsupplier" method="post" role="form">
                             <div class="modal-body">
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Nama</label>
+                                    <label class="col-sm-4 col-form-label">Kode Supplier
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" required="required" name="kode" value="<?php echo $kode_otomatis ?>" readonly>
+                                    </div>
+                                </div>
+                              </div>    
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Nama Supplier</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="name" placeholder="Name">
+                                    <input type="text" class="form-control" name="nama" placeholder="Nama Supplier" required>
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Username</label>
+                                  <label class="col-sm-4 col-form-label">Alamat</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="username" placeholder="Username">
+                                    <textarea id="alamat" name="alamat" class="form-control" placeholder="Alamat" rows="4"></textarea>
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Email</label>
+                                  <label class="col-sm-4 col-form-label">Kota</label>
                                   <div class="col-sm-8">
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                    <input type="text" class="form-control" name="kota" placeholder="Kota">
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Password</label>
+                                  <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                   <div class="col-sm-8">
-                                    <input type="password" class="form-control" name="password" placeholder="Password">
+                                    <input type="tel" class="form-control" name="phone" placeholder="Nomor Telepon">
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Nomor HP</label>
+                                  <label class="col-sm-4 col-form-label">Bank</label>
                                   <div class="col-sm-8">
-                                    <input type="tel" class="form-control" name="handphone" placeholder="Nomor HP">
+                                    <input type="text" class="form-control" name="bank" placeholder="Bank">
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Hak Akses</label>
-                                  <div class="col-sm-8"><select name="role" class="form-control select2">
-                                      <option>-- Pilih --</option>
-                                      <option value="Admin">Admin</option>
-                                      <option value="Kepala divisi">Kepala divisi</option>
-                                    </select>
+                                  <label class="col-sm-4 col-form-label">Nomor Rekening</label>
+                                  <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="norek" placeholder="Nomor Rekening">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Contact Person (CP)</label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="cp" placeholder="Contact Person">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Nomor CP</label>
+                                  <div class="col-sm-8">
+                                    <input type="tel" class="form-control" name="nocp" placeholder="Nomor CP">
                                   </div>
                                 </div>
                               </div>
@@ -333,12 +400,54 @@ include('cekadmin.php');
           </div>
         </section>
       </div>
+      <!-- memulai modal nya. Pada id="$show" harus sama dengan data-target="#show" pada tombol di atas -->
+      <div class="modal fade" id="show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel"><b>Detail Data</b></h4>
+                  </div>
+                  <!-- memulai untuk konten dinamis -->
+                  <!-- lihat id="data_supplier", ini yang di panggil pada ajax di bawah -->
+                  <div class="modal-body" id="data_supplier">
+                  </div>
+                  <!-- selesai konten dinamis -->
+              </div>
+          </div>
+      </div>
       <footer class="main-footer">
         <div class="footer-left">
           <footer>&copy; Copyright 2020 PT. SAKTI</footer>
         </div>
       </footer>
     </div>
+    <script src="../assets/js/jquery-3.2.1.min.js"></script>
+    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
+    <script>
+        // ini menyiapkan dokumen agar siap grak :)
+        $(document).ready(function() {
+            // yang bawah ini bekerja jika tombol lihat data (class="view_data") di klik
+            $('.view_data').click(function() {
+                // membuat variabel id, nilainya dari attribut id pada button
+                // id="'.$row['id'].'" -> data id dari database ya sob, jadi dinamis nanti id nya
+                var id = $(this).attr("id");
+
+                // memulai ajax
+                $.ajax({
+                    url: 'detail_supplier.php', // set url -> ini file yang menyimpan query tampil detail data karyawan
+                    method: 'post', // method -> metodenya pakai post.
+                    data: {
+                        id: id
+                    }, // nah ini datanya -> {id:id} = berarti menyimpan data post id yang nilainya dari = var id = $(this).attr("id");
+                    success: function(data) { // kode dibawah ini jalan kalau sukses
+                        $('#data_supplier').html(data); // mengisi konten dari -> <div class="modal-body" id="data_karyawan">
+                        $('#show').modal("show"); // menampilkan dialog modal nya
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>

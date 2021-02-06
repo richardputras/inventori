@@ -1,7 +1,7 @@
 <?php
 
-session_start();
 include_once '../koneksi.php';
+include('cekadmin.php');
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../index.php");
@@ -90,12 +90,13 @@ if (!isset($_SESSION['user_id'])) {
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
+                                <span>Data Master</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -103,7 +104,7 @@ if (!isset($_SESSION['user_id'])) {
                         </li>
                         <li class="menu-header">Settings</li>
                         <li class="dropdown">
-                            <a href="logout.php" class="nav-link"><i data-feather="log-out"></i><span>Logout</span></a>
+                            <a href="../logout.php" class="nav-link"><i data-feather="log-out"></i><span>Logout</span></a>
                         </li>
                     </ul>
                 </aside>
@@ -178,14 +179,13 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Custom JS File -->
     <script src="../assets/js/custom.js"></script>
 </body>
-<script>
+<!-- <script>
     function confirmDelete(link) {
         if (confirm("Data ini akan dihapus ?")) {
             doAjax(link.href, "POST"); // doAjax needs to send the "confirm" field
         }
         return false;
     }
-</script>
-<?php mysqli_close($koneksi); ?>
+</script> -->
 
 </html>

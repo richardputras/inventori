@@ -81,12 +81,20 @@ include('cekadmin.php');
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
+                                <span>Data Master</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -128,8 +136,9 @@ include('cekadmin.php');
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">No.</th>
+                                                        <th class="text-center">NIP</th>
                                                         <th class="text-center">Nama Lengkap</th>
-                                                        <th class="text-center">Jabatan</th>
+                                                        <th class="text-center">Tempat/Tgl. Lahir</th>
                                                         <th class="text-center">Nomor HP</th>
                                                         <th class="text-center">Tanggal Masuk</th>
                                                         <th class="text-center">Foto</th>
@@ -165,25 +174,26 @@ include('cekadmin.php');
                                                         return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
                                                     }
                                                     include '../koneksi.php';
-                                                    $query = "SELECT * FROM karyawan k INNER JOIN jabatan j ON k.id_jabatan = j.id_jabatan ORDER BY id ASC";
+                                                    $query = "SELECT * FROM karyawan k ORDER BY id ASC";
                                                     $result = mysqli_query($koneksi, $query);
                                                     $no = 1;
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                     ?>
                                                         <tr>
                                                             <td align="center"><?php echo $no++; ?></td>
-                                                            <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id']; ?>"><?php echo $row['nama']; ?></a></td>
-                                                            <td align="center"><?php echo $row['nama_jabatan']; ?></td>
-                                                            <td align="center"><?php echo $row['nomor_hp']; ?></td>
+                                                            <td align="center"><?php echo $row['nip']; ?></td>
+                                                            <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id']; ?>"><?php echo $row['nama_depan'] ." ". $row['nama_tengah']  ." ". $row['nama_belakang']; ?></a></td>
+                                                            <td align="center"><?php echo $row['tempat_lahir'] .", ". date('d/m/Y', strtotime($row['tgl_lahir'])) ; ?></td>
+                                                            <td align="center"><?php echo "+62" . number_format($row['nomor_hp_pribadi'], 0, ".", "-"); ?></td>
                                                             <td align="center">
                                                                 <?php echo tanggal_indonesia(date($row['tgl_masuk'])); ?>
                                                             </td>
-                                                            <td align="center"><img src="../gambar/<?php echo $row['pas_foto'] ?>" width="120"></td>
+                                                            <td align="center"><img src="../gambar/<?php echo $row['pas_foto'] ?>" width="100"></td>
                                                             <td align="center">
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatekaryawan<?php echo $row['id']; ?>">
-                                                                    <i class="fa fa-edit"></i>Edit</a>
+                                                                    <i class="fa fa-edit"></i></a>
                                                                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deletekaryawan<?php echo $row['id']; ?>">
-                                                                    <i class="fa fa-trash"></i>Delete</a>
+                                                                    <i class="fa fa-trash"></i></a>
                                                             </td>
                                                             <!-- modal delete -->
                                                             <div class="example-modal">
@@ -216,8 +226,7 @@ include('cekadmin.php');
                                                                                 <div class="modal-body">
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">NIP
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">NIP</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="nip" value="<?php echo $row['nip']; ?>">
                                                                                             </div>
@@ -225,8 +234,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">NIK
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">NIK</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="nik" value="<?php echo $row['nik']; ?>">
                                                                                             </div>
@@ -234,18 +242,32 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Nama Lengkap
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Nama Depan</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="hidden" class="form-control" name="id" value="<?php echo $row['id']; ?>">
-                                                                                                <input type="text" class="form-control" name="fn" value="<?php echo $row['nama']; ?>">
+                                                                                                <input type="text" class="form-control" name="fn" value="<?php echo $row['nama_depan']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Jenis Kelamin
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Nama Tengah</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" class="form-control" name="mn" value="<?php echo $row['nama_tengah']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Nama Belakang</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" class="form-control" name="ln" value="<?php echo $row['nama_belakang']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Jenis Kelamin</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <select name="jk" class="form-control select2" style="width: 100%;">
                                                                                                     <option>-- Pilih --</option>
@@ -257,8 +279,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Tempat Lahir
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Tempat Lahir</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="tl" value="<?php echo $row['tempat_lahir']; ?>">
                                                                                             </div>
@@ -266,8 +287,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Tanggal Lahir
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="date" class="form-control" name="tgl_lahir" value="<?php echo $row['tgl_lahir']; ?>">
                                                                                             </div>
@@ -275,8 +295,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Email Pribadi
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Email Pribadi</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="p_email" value="<?php echo $row['email_pribadi']; ?>">
                                                                                             </div>
@@ -284,39 +303,35 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Email Corporate
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Email Kantor</label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="text" class="form-control" name="c_email" value="<?php echo $row['email_corporate']; ?>">
+                                                                                                <input type="text" class="form-control" name="c_email" value="<?php echo $row['email_kantor']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Nomor HP
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Nomor HP Pribadi</label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="tel" class="form-control" name="handphone" value="<?php echo $row['nomor_hp']; ?>">
+                                                                                                <input type="tel" class="form-control" name="handphone" value="<?php echo $row['nomor_hp_pribadi']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Nomor Telp Rumah
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Nomor HP Kantor</label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="tel" class="form-control" name="phone" value="<?php echo $row['nomor_telp_rmh']; ?>">
+                                                                                                <input type="tel" class="form-control" name="phone" value="<?php echo $row['nomor_hp_kantor']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Status
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Status</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <select name="status" class="form-control select2" style="width: 100%;">
                                                                                                     <option>-- Pilih --</option>
-                                                                                                    <option value="Single">Single</option>
+                                                                                                    <option value="Lajang">Lajang</option>
                                                                                                     <option value="Menikah">Menikah</option>
                                                                                                     <option value="Cerai">Cerai</option>
                                                                                                 </select>
@@ -325,8 +340,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Jumlah Anak
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Jumlah Anak</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="number" class="form-control" name="anak" value="<?php echo $row['jml_anak']; ?>">
                                                                                             </div>
@@ -334,8 +348,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Tanggal Masuk
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Tanggal Masuk</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="date" class="form-control" name="tgl_msk" value="<?php echo $row['tgl_masuk']; ?>">
                                                                                             </div>
@@ -343,8 +356,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Alamat Sekarang
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">Alamat (Sesuai KTP)</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <textarea class="form-control" name="alamat"><?php echo $row['alamat']; ?></textarea>
                                                                                             </div>
@@ -352,10 +364,25 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Kode Pos
-                                                                                            </label>
+                                                                                            <label class="col-sm-4 col-form-label">RT/RW</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" class="form-control" name="rt" value="<?php echo $row['rt_rw']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Kode Pos</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="kode_pos" value="<?php echo $row['kode_pos']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Alamat (Alternatif)</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <textarea class="form-control" name="alamat2"><?php echo $row['alamat_alternatif']; ?></textarea>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -406,15 +433,17 @@ include('cekadmin.php');
                     </div>
                 </div>
             </div>
+            <footer class="main-footer">
+                <div class="footer-left">
+                    <footer>&copy; Copyright 2020 PT. SAKTI</footer>
+                </div>
+            </footer>
         </div>
-        <footer class="main-footer">
-            <div class="footer-left">
-                <footer>&copy; Copyright 2020 PT. SAKTI</footer>
-            </div>
-        </footer>
     </div>
+
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
     <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    
     <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
     <script>
         // ini menyiapkan dokumen agar siap grak :)
@@ -427,7 +456,7 @@ include('cekadmin.php');
 
                 // memulai ajax
                 $.ajax({
-                    url: 'detail.php', // set url -> ini file yang menyimpan query tampil detail data karyawan
+                    url: 'detail_karyawan.php', // set url -> ini file yang menyimpan query tampil detail data karyawan
                     method: 'post', // method -> metodenya pakai post.
                     data: {
                         id: id

@@ -81,12 +81,20 @@ include('cekadmin.php');
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
+                                <span>Data Master</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -128,8 +136,7 @@ include('cekadmin.php');
                                                         <th class="text-center">No.</th>
                                                         <th class="text-center">Nama Jabatan</th>
                                                         <th class="text-center">Kode</th>
-                                                        <th class="text-center">Job Desk</th>
-                                                        <th class="text-center">Gaji Pokok</th>
+                                                        <th class="text-center">Total Gaji</th>
                                                         <th class="text-center">Tgl. Gaji</th>
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
@@ -168,20 +175,20 @@ include('cekadmin.php');
                                                     $no = 1;
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                     ?>
+                                                    
                                                         <tr>
                                                             <td align="center"><?php echo $no++; ?></td>
-                                                            <td align="center"><?php echo $row['nama_jabatan']; ?></td>
+                                                            <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_jabatan']; ?>"><?php echo $row['nama_jabatan']; ?></a></td>
                                                             <td align="center"><?php echo $row['nama']; ?></td>
-                                                            <td align="center"><?php echo $row['job_desc']; ?></td>
-                                                            <td align="center"><?php echo $row['gaji_pokok']; ?></td>
+                                                            <td align="center"><?php echo "IDR " . number_format($row['total_gaji'], 2, ",", "."); ?></td>
                                                             <td align="center">
-                                                                <?php echo "Setiap tgl" . " " . $row['tgl_gaji']; ?>
+                                                                <?php echo $row['tgl_gaji']; ?>
                                                             </td>
                                                             <td align="center">
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatejabatan<?php echo $row['id_jabatan']; ?>">
-                                                                    <i class="fa fa-edit"></i>Edit</a>
+                                                                    <i class="fa fa-edit"></i></a>
                                                                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deletejabatan<?php echo $row['id_jabatan']; ?>">
-                                                                    <i class="fa fa-trash"></i>Delete</a>
+                                                                    <i class="fa fa-trash"></i></a>
                                                             </td>
                                                             <!-- modal delete -->
                                                             <div class="example-modal">
@@ -234,10 +241,10 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Job Desk
+                                                                                            <label class="col-sm-4 col-form-label">Job Desc
                                                                                             </label>
                                                                                             <div class="col-sm-8">
-                                                                                                <textarea class="form-control" name="desc" placeholder="Job Deskripsi"><?php echo $row['job_desc']; ?></textarea>
+                                                                                                <textarea class="form-control" name="desc" placeholder="Job Description"><?php echo $row['job_desc']; ?></textarea>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -246,7 +253,25 @@ include('cekadmin.php');
                                                                                             <label class="col-sm-4 col-form-label">Gaji Pokok
                                                                                             </label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="number" class="form-control" name="gaji" placeholder="Gaji Pokok" value="<?php echo $row['gaji_pokok']; ?>">
+                                                                                                <input type="number" class="form-control" name="gaji" value="<?php echo $row['gaji_pokok']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Tunjangan
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number" class="form-control" name="tunjangan" value="<?php echo $row['tunjangan']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Fasilitas
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" class="form-control" name="fasilitas" value="<?php echo $row['fasilitas']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -255,7 +280,7 @@ include('cekadmin.php');
                                                                                             <label class="col-sm-4 col-form-label">Tanggal Gaji
                                                                                             </label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="text" class="form-control" name="tgl_gaji" placeholder="Tanggal Gaji" value="<?php echo $row['tgl_gaji']; ?>">
+                                                                                                <input type="text" class="form-control" name="tgl_gaji" value="<?php echo $row['tgl_gaji']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -324,10 +349,10 @@ include('cekadmin.php');
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <div class="row">
-                                                                                    <label class="col-sm-4 col-form-label">Job Desk
+                                                                                    <label class="col-sm-4 col-form-label">Job Desc
                                                                                     </label>
                                                                                     <div class="col-sm-8">
-                                                                                        <textarea class="form-control" name="desc" placeholder="Job Deskripsi"></textarea>
+                                                                                        <textarea class="form-control" name="desc" placeholder="Job Description"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -350,6 +375,24 @@ include('cekadmin.php');
                                                                                     </label>
                                                                                     <div class="col-sm-8">
                                                                                         <input type="number" class="form-control" name="gaji" placeholder="Gaji Pokok">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-sm-4 col-form-label">Tunjangan
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number" class="form-control" name="tunjangan" placeholder="Tunjangan">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <label class="col-sm-4 col-form-label">Fasilitas
+                                                                                    </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="text" class="form-control" name="fasilitas" placeholder="Fasilitas">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -400,6 +443,21 @@ include('cekadmin.php');
                     </div>
                 </section>
             </div>
+            <!-- memulai modal nya. Pada id="$show" harus sama dengan data-target="#show" pada tombol di atas -->
+            <div class="modal fade" id="show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"><b>Detail Data</b></h4>
+                        </div>
+                        <!-- memulai untuk konten dinamis -->
+                        <!-- lihat id="data_jabaan", ini yang di panggil pada ajax di bawah -->
+                        <div class="modal-body" id="data_jabatan">
+                        </div>
+                        <!-- selesai konten dinamis -->
+                    </div>
+                </div>
+            </div>
             <footer class="main-footer">
                 <div class="footer-left">
                     <footer>&copy; Copyright 2020 PT. SAKTI</footer>
@@ -407,6 +465,33 @@ include('cekadmin.php');
             </footer>
         </div>
     </div>
+    <script src="../assets/js/jquery-3.2.1.min.js"></script>
+    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
+    <script>
+        // ini menyiapkan dokumen agar siap grak :)
+        $(document).ready(function() {
+            // yang bawah ini bekerja jika tombol lihat data (class="view_data") di klik
+            $('.view_data').click(function() {
+                // membuat variabel id, nilainya dari attribut id pada button
+                // id="'.$row['id'].'" -> data id dari database ya sob, jadi dinamis nanti id nya
+                var id = $(this).attr("id");
+
+                // memulai ajax
+                $.ajax({
+                    url: 'detail_jabatan.php', // set url -> ini file yang menyimpan query tampil detail data karyawan
+                    method: 'post', // method -> metodenya pakai post.
+                    data: {
+                        id: id
+                    }, // nah ini datanya -> {id:id} = berarti menyimpan data post id yang nilainya dari = var id = $(this).attr("id");
+                    success: function(data) { // kode dibawah ini jalan kalau sukses
+                        $('#data_jabatan').html(data); // mengisi konten dari -> <div class="modal-body" id="data_karyawan">
+                        $('#show').modal("show"); // menampilkan dialog modal nya
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>

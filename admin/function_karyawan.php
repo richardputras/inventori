@@ -5,11 +5,15 @@ if ($_GET['act'] == 'editkaryawan') {
     $idkaryawan = $_POST['id'];
     $nip = $_POST['nip'];
     $nik = $_POST['nik'];
-    $nama = $_POST['fn'];
+    $namadepan = $_POST['fn'];
+    $namatengah = $_POST['mn'];
+    $namabelakang = $_POST['ln'];
     $jk = $_POST['jk'];
     $tl = $_POST['tl'];
     $tgllahir = $_POST['tgl_lahir'];
     $alamat = $_POST['alamat'];
+    $alamat2 = $_POST['alamat2'];
+    $rt_rw = $_POST['rt'];
     $kode = $_POST['kode_pos'];
     $tglmsk = $_POST['tgl_msk'];
     $status = $_POST['status'];
@@ -24,8 +28,8 @@ if ($_GET['act'] == 'editkaryawan') {
 
     if (empty($foto)) {
 
-        $queryupdate = mysqli_query($koneksi, "UPDATE karyawan SET nip = '$nip', nik = '$nik', nama = '$nama', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
-        alamat = '$alamat', kode_pos = '$kode', email_pribadi = '$emailp', email_corporate = '$emailc', nomor_hp = '$noHP', nomor_telp_rmh = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk' 
+        $queryupdate = mysqli_query($koneksi, "UPDATE karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+        alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode', email_pribadi = '$emailp', email_kantor = '$emailc', nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk' 
         WHERE id = '$idkaryawan'");
 
         if ($queryupdate) {
@@ -44,8 +48,8 @@ if ($_GET['act'] == 'editkaryawan') {
             if (is_file("../gambar/" . $row['pas_foto']))
                 unlink("../gambar/" . $row['pas_foto']);
 
-            $queryupdate = mysqli_query($koneksi, "UPDATE karyawan SET nip = '$nip', nik = '$nik', nama = '$nama', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
-            alamat = '$alamat', kode_pos = '$kode', email_pribadi = '$emailp', email_corporate = '$emailc', nomor_hp = '$noHP', nomor_telp_rmh = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', 
+            $queryupdate = mysqli_query($koneksi, "UPDATE karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+            alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode', email_pribadi = '$emailp', email_corporate = '$emailc', nomor_hp = '$noHP', nomor_telp_rmh = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', 
             pas_foto = '$fotobaru' WHERE id = '$idkaryawan'");
 
             if ($queryupdate) {

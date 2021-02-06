@@ -5,10 +5,19 @@ if ($_GET['act'] == 'addbarang') {
     $kode = $_POST['kode'];
     $namabrg = $_POST['namabrg'];
     $deskripsi = $_POST['deskripsi'];
+    $qty = $_POST['qty'];
+    $satuan = $_POST['satuan'];
     $tglbayar = $_POST['tglbayar'];
+    $tglterima = $_POST['tglterima'];
     $kondisi = $_POST['kondisi'];
     $status = $_POST['status'];
+    $hargabeli = $_POST['hargabeli'];
+    $hargajual = $_POST['hargajual'];
+    $ekshargajual = $_POST['ekshargajual'];
+    $jadwal = $_POST['perbaikan'];
+    $garansi = $_POST['garansi'];
     $pemegang = $_POST['pemegang'];
+    $supplier = $_POST['supplier'];
 
     $nama_file = $_FILES['foto']['name'];
     $ukuran_file = $_FILES['foto']['size'];
@@ -20,19 +29,32 @@ if ($_GET['act'] == 'addbarang') {
     if ($ukuran_file <= 2000000) { // Cek apakah ukuran file yang diupload kurang dari sama dengan 1MB
         // Jika ukuran file kurang dari sama dengan 2MB, lakukan :
         // Proses upload
-        if (move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
-            // Jika gambar berhasil diupload, Lakukan :  
-            // Proses simpan ke Database
-            $querytambah = mysqli_query($koneksi, "INSERT INTO barang(id_barang, kode_barang, nama_barang, deskripsi, foto, tgl_bayar, kondisi_barang, status_barang, id_pemegang) VALUES(NULL, '$kode' , '$namabrg', '$deskripsi', '" . $nama_file . "', '$tglbayar', '$kondisi', '$status', '$pemegang')");
+
+        if (empty($nama_file)) {
+            $querytambah = mysqli_query($koneksi, "INSERT INTO barang(id_barang, kode_barang, nama_barang, harga_beli, harga_jual, eks_harga_jual, deskripsi, foto, qty, satuan, tgl_bayar, tgl_terima, kondisi_barang, status_barang, jadwal_perbaikan, garansi, id_pemegang, id_supplier) VALUES(NULL, '$kode' , '$namabrg', '$hargabeli', '$hargajual', '$ekshargajual', '$deskripsi', '" . $nama_file . "', '$qty', '$satuan', '$tglbayar', '$tglterima', '$kondisi', '$status', '$jadwal', '$garansi', '$pemegang', '$supplier')");
 
             if ($querytambah) {
                 echo "<script> alert('Selamat, data $namabrg berhasil ditambahkan.');
                           window.location.href = 'barang.php'; </script>";
             } else {
-                echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);
+                echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
             }
-        } else {
-            echo "Maaf, gambar gagal untuk diupload!";
+        }
+        else {
+            if(move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
+            // Jika gambar berhasil diupload, Lakukan :  
+            // Proses simpan ke Database
+            $querytambah = mysqli_query($koneksi, "INSERT INTO barang(id_barang, kode_barang, nama_barang, harga_beli, harga_jual, eks_harga_jual, deskripsi, foto, qty, satuan, tgl_bayar, tgl_terima, kondisi_barang, status_barang, jadwal_perbaikan, garansi, id_pemegang, id_supplier) VALUES(NULL, '$kode' , '$namabrg', '$hargabeli', '$hargajual', '$ekshargajual', '$deskripsi', '" . $nama_file . "', '$qty', '$satuan', '$tglbayar', '$tglterima', '$kondisi', '$status', '$jadwal', '$garansi', '$pemegang', '$supplier')");
+
+                if ($querytambah) {
+                    echo "<script> alert('Selamat, data $namabrg berhasil ditambahkan.');
+                          window.location.href = 'barang.php'; </script>";
+                } else {
+                    echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);
+                }
+            } else {
+                echo "Maaf, gambar gagal untuk diupload!";
+            }
         }
     } else {
         echo "Maaf, ukuran gambar yang diupload tidak boleh lebih dari 2MB!";
@@ -41,15 +63,22 @@ if ($_GET['act'] == 'addbarang') {
     $idbrg = $_POST['idbrg'];
     $kode = $_POST['kode'];
     $namabrg = $_POST['namabrg'];
+    $hargabeli = $_POST['hargabeli'];
+    $hargajual = $_POST['hargajual'];
     $deskripsi = $_POST['deskripsi'];
+    $qty = $_POST['qty'];
+    $satuan = $_POST['satuan'];
     $tglbayar = $_POST['tglbayar'];
+    $tglterima = $_POST['tglterima'];
+    $kondisi = $_POST['kondisi'];
     $status = $_POST['status'];
+    $garansi = $_POST['garansi'];
 
     $foto = $_FILES['foto']['name'];
     $tmp = $_FILES['foto']['tmp_name'];
 
     if (empty($foto)) {
-        $queryupdate = mysqli_query($koneksi, "UPDATE barang SET kode_barang= '$kode', nama_barang = '$namabrg', deskripsi = '$deskripsi', tgl_bayar= '$tglbayar', status_barang = '$status' WHERE id_barang = '$idbrg' ");
+        $queryupdate = mysqli_query($koneksi, "UPDATE barang SET kode_barang= '$kode', nama_barang = '$namabrg', harga_beli = '$hargabeli', harga_jual = '$hargajual', deskripsi = '$deskripsi', qty='$qty', satuan='$satuan', tgl_bayar= '$tglbayar', tgl_terima= '$tglterima', kondisi_barang = '$kondisi', status_barang = '$status', garansi = '$garansi' WHERE id_barang = '$idbrg' ");
         if ($queryupdate) {
             echo "<script> alert('Data berhasil diupdate');
                   window.location.href = 'barang.php'; </script>";
@@ -64,7 +93,7 @@ if ($_GET['act'] == 'addbarang') {
             if (is_file("../gambar/" . $row['foto']))
                 unlink("../gambar/" . $row['foto']);
 
-            $queryupdate = mysqli_query($koneksi, "UPDATE barang SET kode_barang= '$kode', nama_barang = '$namabrg', deskripsi = '$deskripsi', foto = '$fotobaru', kondisi_barang= '$kondisi', status_barang = '$status' WHERE id_barang = '$idbrg' ");
+            $queryupdate = mysqli_query($koneksi, "UPDATE barang SET kode_barang= '$kode', nama_barang = '$namabrg', harga_beli = '$hargabeli', harga_jual = '$hargajual', deskripsi = '$deskripsi', qty='$qty', satuan='$satuan', tgl_bayar= '$tglbayar', tgl_terima= '$tglterima', foto = '$fotobaru', kondisi_barang= '$kondisi', status_barang = '$status', garansi = '$garansi' WHERE id_barang = '$idbrg' ");
 
             if ($queryupdate) {
                 echo "<script> alert('Data berhasil diupdate');

@@ -11,7 +11,7 @@ include('cekadmin.php');
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Halaman Pengguna</title>
+  <title>Halaman Perbaikan</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="../assets/css/app.min.css">
   <link rel="stylesheet" href="../assets/bundles/datatables/dataTables.min.css">
@@ -115,8 +115,8 @@ include('cekadmin.php');
               <div class="col-12">
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Data Pengguna</h3>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adduser"><i class="fa fa-plus"></i>Tambah Data
+                    <h3>Data Perbaikan</h3>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addperbaikan"><i class="fa fa-plus"></i>Tambah Data
                     </button>
                   </div>
                   <div class="card-body">
@@ -125,11 +125,11 @@ include('cekadmin.php');
                         <thead>
                           <tr>
                             <th class="text-center">No.</th>
-                            <th class="text-center">Nama</th>
-                            <th class="text-center">Username</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">No. HP</th>
-                            <th class="text-center">Hak Akses</th>
+                            <th class="text-center">Judul</th>
+                            <th class="text-center">Keterangan</th>
+                            <th class="text-center">Jenis Perbaikan</th>
+                            <th class="text-center">Tanggal Perbaikan</th>
+                            <th class="text-center">No. CP</th>
                             <th class="text-center">Opsi</th>
                           </tr>
                         </thead>
@@ -137,28 +137,28 @@ include('cekadmin.php');
                         <tbody>
                           <?php
                           include '../koneksi.php';
-                          $query = "SELECT * FROM user ORDER by id_user ASC";
+                          $query = "SELECT * FROM perbaikan ORDER by id_perbaikan ASC";
                           $result = mysqli_query($koneksi, $query);
                           $no = 1;
                           while ($row = mysqli_fetch_assoc($result)) {
                           ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
-                              <td align="center"><?php echo $row['name']; ?></td>
-                              <td align="center"><?php echo $row['username']; ?></td>
-                              <td align="center"><?php echo $row['email']; ?></td>
-                              <td align="center"><?php echo $row['telepon']; ?></td>
-                              <td align="center"><?php echo $row['role']; ?></td>
+                              <td align="center"><?php echo $row['judul']; ?></td>
+                              <td align="center"><?php echo $row['keterangan']; ?></td>
+                              <td align="center"><?php echo $row['jenis_perbaikan']; ?></td>
+                              <td align="center"><?= date('d/M/Y h:i:s', strtotime($row['tanggal'])); ?></td>
+                              <td align="center"><?php echo $row['no_contact_person']; ?></td>
                               <td align="center">
-                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updateuser<?php echo $row['id_user']; ?>">
+                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updateperbaikan<?php echo $row['id_perbaikan']; ?>">
                                   <i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteuser<?php echo $row['id_user']; ?>">
+                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteperbaikan<?php echo $row['id_perbaikan']; ?>">
                                   <i class="fa fa-trash"></i></a>
                               </td>
 
                               <!-- modal delete -->
                               <div class="example-modal">
-                                <div id="deleteuser<?php echo $row['id_user']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
+                                <div id="deleteperbaikan<?php echo $row['id_perbaikan']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
@@ -169,7 +169,7 @@ include('cekadmin.php');
                                       </div>
                                       <div class="modal-footer">
                                         <button id="nodelete" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
-                                        <a href="function_user.php?act=deleteuser&id=<?php echo $row['id_user']; ?>" class="btn btn-primary">Delete</a>
+                                        <a href="function_perbaikan.php?act=deleteperbaikan&id=<?php echo $row['id_perbaikan']; ?>" class="btn btn-primary">Delete</a>
                                       </div>
                                     </div>
                                   </div>
@@ -177,68 +177,65 @@ include('cekadmin.php');
                               </div><!-- modal delete -->
 
                               <div class="example-modal">
-                                <div id="updateuser<?php echo $row['id_user']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
+                                <div id="updateperbaikan<?php echo $row['id_perbaikan']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
-                                        <h3 class="modal-title">Edit Data User</h3>
+                                        <h3 class="modal-title">Edit Data Perbaikan</h3>
                                       </div>
 
                                       <form action="function_user.php?act=updateuser" method="post" role="form">
                                         <div class="modal-body">
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Nama</label>
+                                              <label class="col-sm-4 col-form-label">Judul Perbaikan</label>
                                               <div class="col-sm-8">
-                                                <input type="text" class="form-control" name="name" value="<?php echo $row['name']; ?>">
+                                                <input type="hidden" class="form-control" name="id_perbaikan" value="<?php echo $row['id_perbaikan']; ?>">
+                                                <input type="text" class="form-control" name="judul" value="<?php echo $row['judul']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Username</label>
+                                              <label class="col-sm-4 col-form-label">Keterangan</label>
                                               <div class="col-sm-8">
-                                                <input type="hidden" class="form-control" name="id_user" value="<?php echo $row['id_user']; ?>">
-                                                <input type="text" class="form-control" name="username" value="<?php echo $row['username']; ?>">
+                                                <input type="text" class="form-control" name="keterangan" value="<?php echo $row['keterangan']; ?>">
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <!-- <div class="form-group">
+                                            <div class="row">
+                                              <label class="col-sm-4 col-form-label">Jenis Perbaikan</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" class="form-control" name="jenis" value="<?php echo $row['jenis_perbaikan']; ?>">
+                                              </div>
+                                            </div>
+                                          </div> -->
+                                          <div class="form-group">
+                                            <div class="row">
+                                              <label class="col-sm-4 col-form-label">Harga Perbaikan</label>
+                                              <div class="col-sm-8">
+                                                <input type="number" class="form-control" name="harga" value="<?php echo $row['harga']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Email</label>
+                                              <label class="col-sm-4 col-form-label">Contact Person</label>
                                               <div class="col-sm-8">
-                                                <input type="email" class="form-control" name="email" value="<?php echo $row['email']; ?>">
+                                                <input type="text" class="form-control" name="CP" value="<?php echo $row['contact_person']; ?>">
                                               </div>
                                             </div>
                                           </div>
                                           <div class="form-group">
                                             <div class="row">
-                                              <label class="col-sm-4 col-form-label">Password</label>
+                                              <label class="col-sm-4 col-form-label">Nomor CP</label>
                                               <div class="col-sm-8">
-                                                <input type="password" class="form-control" name="password" value="<?php echo $row['password']; ?>" readonly>
+                                                <input type="tel" class="form-control" name="noCP" value="<?php echo $row['no_contact_person']; ?>">
                                               </div>
                                             </div>
                                           </div>
-                                          <div class="form-group">
-                                            <div class="row">
-                                              <label class="col-sm-4 col-form-label">Nomor HP</label>
-                                              <div class="col-sm-8">
-                                                <input type="tel" class="form-control" name="handphone" value="<?php echo $row['telepon']; ?>">
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div class="form-group">
-                                            <div class="row">
-                                              <label class="col-sm-4 col-form-label">Hak Akses</label>
-                                              <div class="col-sm-8">
-                                                <select name="role" class="form-control select2" style="width: 100%;">
-                                                  <option>-- Pilih --</option>
-                                                  <option value="Admin">Admin</option>
-                                                  <option value="Kepala divisi">Kepala divisi</option>
-                                                </select>
-                                              </div>
-                                            </div>
-                                          </div>
+                                          
                                           <div class="modal-footer">
                                             <button id="noedit" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel
                                             </button>
@@ -256,65 +253,129 @@ include('cekadmin.php');
                   ?>
 
                   <div class="example-modal">
-                    <div id="adduser" class="modal fade" role="dialog" style="display:none;">
+                    <div id="addperbaikan" class="modal fade" role="dialog" style="display:none;">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h3 class="modal-title">Tambah User Baru</h3>
+                            <h3 class="modal-title">Tambah Data Perbaikan</h3>
                           </div>
-                          <form action="function_user.php?act=adduser" method="post" role="form">
+                          <form action="function_perbaikan.php?act=addperbaikan" method="post" role="form">
                             <div class="modal-body">
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Nama</label>
+                                  <label class="col-sm-4 col-form-label">Judul Perbaikan</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="name" placeholder="Name">
+                                    <input type="text" class="form-control" name="judul" placeholder="Judul Perbaikan">
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Username</label>
+                                  <label class="col-sm-4 col-form-label">Keterangan</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="username" placeholder="Username">
+                                    <input type="text" class="form-control" name="keterangan" placeholder="Keterangan">
                                   </div>
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="row">
-                                  <label class="col-sm-4 col-form-label">Email</label>
+                                  <label class="col-sm-4 col-form-label">Jenis Perbaikan</label>
                                   <div class="col-sm-8">
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="row">
-                                  <label class="col-sm-4 col-form-label">Password</label>
-                                  <div class="col-sm-8">
-                                    <input type="password" class="form-control" name="password" placeholder="Password">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="row">
-                                  <label class="col-sm-4 col-form-label">Nomor HP</label>
-                                  <div class="col-sm-8">
-                                    <input type="tel" class="form-control" name="handphone" placeholder="Nomor HP">
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="row">
-                                  <label class="col-sm-4 col-form-label">Hak Akses</label>
-                                  <div class="col-sm-8"><select name="role" class="form-control select2">
+                                    <select name="jenis" id="jenis" class="form-control select2">
                                       <option>-- Pilih --</option>
-                                      <option value="Admin">Admin</option>
-                                      <option value="Kepala divisi">Kepala divisi</option>
+                                      <option value="Maintenance">Maintenance</option>
+                                      <option value="Human error">Human Error</option>
                                     </select>
                                   </div>
                                 </div>
                               </div>
+                              <div class="form-group">
+                                <div class="row" id="error" style="display: none;">
+                                    <label class="col-sm-4 col-form-label">Pembuat Kerusakan
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select name="error" class="form-control select2">
+                                            <option>-- Pilih --</option>
+                                            <?php
+                                            $sql = mysqli_query($koneksi, "SELECT * FROM karyawan ORDER BY id ASC");
+                                            while ($data = mysqli_fetch_assoc($sql)) {
+                                            ?>
+                                                <option value="<?= $data['id']; ?>"><?= $data['nama_depan'] ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row" id="tglrusak" style="display: none;">
+                                  <label class="col-sm-4 col-form-label">Tanggal Kerusakan</label>
+                                  <div class="col-sm-8">
+                                    <input type="date" class="form-control" name="tglrusak">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row" id="kronologi" style="display: none;">
+                                    <label class="col-sm-4 col-form-label">Kronologi
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" name="kronologi" placeholder="Kronologi"></textarea>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row" id="solusi" style="display: none;">
+                                  <label class="col-sm-4 col-form-label">Solusi</label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="solusi" placeholder="Solusi">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Harga Perbaikan</label>
+                                  <div class="col-sm-8">
+                                    <input type="number" class="form-control" name="harga" placeholder="Harga Perbaikan">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 col-form-label">Tanggal Perbaikan
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="tgl_mulai">
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-4 col-form-label">Tanggal Selesai
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="tgl_selesai">
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Contact Person</label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="CP" placeholder="Contact Person">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="row">
+                                  <label class="col-sm-4 col-form-label">Nomor CP</label>
+                                  <div class="col-sm-8">
+                                    <input type="tel" class="form-control" name="noCP" placeholder="Nomor CP">
+                                  </div>
+                                </div>
+                              </div>
+                              
                               <div class="modal-footer">
                                 <button id="nosave" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
                                 <button type="submit" name="submit" class="btn btn-primary">Add</button>
@@ -339,6 +400,28 @@ include('cekadmin.php');
         </div>
       </footer>
     </div>
+
+    <script src="../assets/js/jquery-3.2.1.min.js"></script>
+    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+    $(function () {
+        $("#jenis").change(function () {
+            if ($(this).val() == "Human error") {
+                $("#error").show();
+                $("#tglrusak").show();
+                $("#kronologi").show();
+                $("#solusi").show();
+            } 
+            else{
+                $("#error").hide();
+                $("#tglrusak").hide();
+                $("#kronologi").hide();
+                $("#solusi").hide();
+            }
+        });
+    });
+    </script>
 
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>
