@@ -1,6 +1,22 @@
 <?php
 
 include('admin/cekadmin.php');
+session_start();
+// jika ada session
+if(isset($_SESSION["username"])){
+
+    // jika tidak ada aktivitas pada browser selama 60 detik, maka ...
+    if((time() - $_SESSION["last_login_time"]) > 60){
+    
+        // akan diarahkan kehalaman logout.php
+        header("location: logout.php");
+    }
+    
+    else {
+    // jika ada aktivitas, maka update tambah waktu session
+        $_SESSION["last_login_time"] = time();
+    }
+}
 
 ?>
 
@@ -134,6 +150,10 @@ include('admin/cekadmin.php');
                                 <li><a class="nav-link" href="admin/jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="admin/barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="admin/supplier.php">Data Supplier</a></li>
+                                <li><a class="nav-link" href="admin/rpp.php">Data RPP</a></li>
+                                <li><a class="nav-link" href="admin/kelas.php">Data Kelas</a></li>
+                                <li><a class="nav-link" href="admin/murid.php">Data Murid</a></li>
+                                <li><a class="nav-link" href="admin/tuton.php">Data Tuton</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -141,6 +161,14 @@ include('admin/cekadmin.php');
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="admin/perbaikan.php">Perbaikan</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                                <span>Laporan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="admin/laporanbrg.php">Laporan Data Barang</a></li>
+                                <li><a class="nav-link" href="admin/laporankrywn.php">Laporan Data Karyawan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -160,7 +188,7 @@ include('admin/cekadmin.php');
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="../dashboard.php">Home</a>
+                        <a href="dashboard.php">Home</a>
                         <i class="icon-angle-right"></i>
                     </li>
                     <li>Dashboard</li>
@@ -239,7 +267,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlOpt FROM user");
                                                         $opt = $sql->fetch_assoc();
                                                         ?>
-                                                            <h5 class="font-15">Total Pengguna</h5>
+                                                            <h5 class="font-15">Total Data Pengguna</h5>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
                                                         <p class="mb-0"><a href='admin/user.php'>Lihat Detail</a></p>
                                                     </div>
@@ -266,7 +294,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlOpt FROM karyawan");
                                                         $opt = $sql->fetch_assoc();
                                                         ?>
-                                                        <h5 class="font-15">Total Karyawan</h5>
+                                                        <h5 class="font-15">Total Data Karyawan</h5>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
                                                         <p class="mb-0"><a href='admin/karyawan.php' style="color: green;">Lihat Detail</a></p>
                                                     </div>
@@ -293,7 +321,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlStok FROM barang");
                                                         $stok = $sql->fetch_assoc();
                                                         ?>
-                                                        <h5 class="font-16">Total Barang</h5>
+                                                        <h5 class="font-16">Total Data Barang</h5>
                                                         <h2 class="mb-3 font-18"><?= $stok['jmlStok']; ?></h2>
                                                         <p class="mb-0"><a href='admin/barang.php'>Lihat Detail</a></p>
                                                     </div>
@@ -301,6 +329,33 @@ include('admin/cekadmin.php');
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                                                     <div class="banner-img">
                                                         <img src="assets/img/banner/3.png" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="card">
+                                    <div class="card-statistic-4">
+                                        <div class="align-items-center justify-content-between">
+                                            <div class="row ">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                                    <div class="card-content">
+                                                        <?php
+                                                        include "koneksi.php";
+                                                        $sql = $koneksi->query("SELECT COUNT(*) AS jmlStok FROM kelas");
+                                                        $stok = $sql->fetch_assoc();
+                                                        ?>
+                                                        <h5 class="font-16">Total Data Kelas</h5>
+                                                        <h2 class="mb-3 font-18"><?= $stok['jmlStok']; ?></h2>
+                                                        <p class="mb-0"><a href='admin/lihat_hasil1.php'>Lihat Detail</a></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                                    <div class="banner-img">
+                                                        <img src="assets/img/banner/2.jpg" alt="">
                                                     </div>
                                                 </div>
                                             </div>
