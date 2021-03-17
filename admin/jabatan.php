@@ -88,6 +88,10 @@ include('cekadmin.php');
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
+                                <li><a class="nav-link" href="murid.php">Data Murid</a></li>
+                                <li><a class="nav-link" href="tuton.php">Data Tuton</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -95,6 +99,14 @@ include('cekadmin.php');
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                                <span>Laporan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="laporanbrg.php">Laporan Data Barang</a></li>
+                                <li><a class="nav-link" href="laporankrywn.php">Laporan Data Karyawan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -130,14 +142,12 @@ include('cekadmin.php');
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-hover" id="table-2">
+                                            <table class="table table-striped table-hover" id="table-jabatan">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">No.</th>
                                                         <th class="text-center">Nama Jabatan</th>
                                                         <th class="text-center">Kode</th>
-                                                        <th class="text-center">Total Gaji</th>
-                                                        <th class="text-center">Tgl. Gaji</th>
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
                                                 </thead>
@@ -180,10 +190,7 @@ include('cekadmin.php');
                                                             <td align="center"><?php echo $no++; ?></td>
                                                             <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_jabatan']; ?>"><?php echo $row['nama_jabatan']; ?></a></td>
                                                             <td align="center"><?php echo $row['nama']; ?></td>
-                                                            <td align="center"><?php echo "IDR " . number_format($row['total_gaji'], 2, ",", "."); ?></td>
-                                                            <td align="center">
-                                                                <?php echo $row['tgl_gaji']; ?>
-                                                            </td>
+                                                            <!-- <td align="center"><?php echo "IDR " . number_format($row['total_gaji'], 2, ",", "."); ?></td> -->
                                                             <td align="center">
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatejabatan<?php echo $row['id_jabatan']; ?>">
                                                                     <i class="fa fa-edit"></i></a>
@@ -356,19 +363,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="form-group">
-                                                                                <div class="row">
-                                                                                    <label class="col-sm-4 col-form-label">Status Karyawan
-                                                                                    </label>
-                                                                                    <div class="col-sm-8">
-                                                                                        <select class="form-control select2" name="status">
-                                                                                            <option>-- Pilih --</option>
-                                                                                            <option value="Full Time">Full Time</option>
-                                                                                            <option value="Magang">Magang</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                                            
                                                                             <div class="form-group">
                                                                                 <div class="row">
                                                                                     <label class="col-sm-4 col-form-label">Gaji Pokok
@@ -466,8 +461,9 @@ include('cekadmin.php');
         </div>
     </div>
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
     <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
+
     <script>
         // ini menyiapkan dokumen agar siap grak :)
         $(document).ready(function() {
@@ -491,6 +487,12 @@ include('cekadmin.php');
                 });
             });
         });
+    </script>
+
+    <script>
+    $(document).ready(function(){
+        $('#table-jabatan').DataTable();
+    });
     </script>
 
     <!-- General JS Scripts -->

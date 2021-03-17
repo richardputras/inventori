@@ -112,6 +112,10 @@ include('cekadmin.php');
                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
+                <li><a class="nav-link" href="murid.php">Data Murid</a></li>
+                <li><a class="nav-link" href="tuton.php">Data Tuton</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -119,6 +123,14 @@ include('cekadmin.php');
                     <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                    <span>Laporan</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="laporanbrg.php">Laporan Data Barang</a></li>
+                    <li><a class="nav-link" href="laporankrywn.php">Laporan Data Karyawan</a></li>
                 </ul>
             </li>
             <li class="dropdowm">
@@ -134,6 +146,14 @@ include('cekadmin.php');
       <!-- Main Content -->
       <div class="main-content">
         <section class="content">
+            <ul class="breadcrumb">
+              <li>
+                  <i class="icon-home"></i>
+                  <a href="../dashboard.php">Home</a>
+                  <i class="icon-angle-right"></i>
+              </li>
+              <li>Data Supplier</li>
+            </ul>
           <div class="section-body">
             <div class="row">
               <div class="col-12">
@@ -145,14 +165,15 @@ include('cekadmin.php');
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-hover" id="table-2">
+                      <table class="table table-striped table-hover" id="table-supplier">
                         <thead>
                           <tr>
                             <th class="text-center">No.</th>
                             <th class="text-center">Nama</th>
                             <th class="text-center">Alamat</th>
+                            <th class="text-center">Kota</th>
                             <th class="text-center">No. Telepon</th>
-                            <th class="text-center">Contact Person</th>
+                            <!-- <th class="text-center">Contact Person</th> -->
                             <th class="text-center">Opsi</th>
                           </tr>
                         </thead>
@@ -171,8 +192,9 @@ include('cekadmin.php');
                               <td align="center"><?php echo $no++; ?></td>
                               <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_supplier']; ?>"><?php echo $row['nama_supplier']; ?></a></td>
                               <td align="center"><?php echo $row['alamat']; ?></td>
+                              <td align="center"><?php echo $row['kota']; ?></td>
                               <td align="center"><?php echo "+62" . number_format($row['telepon'], 0, ".", "-"); ?></td>
-                              <td align="center"><?php echo $row['contact_person']; ?></td>
+                              <!-- <td align="center"><?php echo $row['contact_person']; ?></td> -->
                               <td align="center">
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatesupplier<?php echo $row['id_supplier']; ?>">
                                   <i class="fa fa-edit"></i></a>
@@ -293,11 +315,10 @@ include('cekadmin.php');
                                   </div>
                                 </div>
                               </div>
-                    </div>
-                    </tr>
-                  <?php
-                          }
-                  ?>
+                            </tr>
+                          <?php
+                            }
+                          ?>
 
                   <div class="example-modal">
                     <div id="addsupplier" class="modal fade" role="dialog" style="display:none;">
@@ -422,7 +443,7 @@ include('cekadmin.php');
       </footer>
     </div>
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
     <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
     <script>
         // ini menyiapkan dokumen agar siap grak :)
@@ -447,6 +468,12 @@ include('cekadmin.php');
                 });
             });
         });
+    </script>
+
+    <script>
+    $(document).ready(function(){
+        $('#table-supplier').DataTable();
+    });
     </script>
 
     <!-- General JS Scripts -->

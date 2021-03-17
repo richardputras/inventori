@@ -88,6 +88,10 @@ include('cekadmin.php');
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
+                                <li><a class="nav-link" href="murid.php">Data Murid</a></li>
+                                <li><a class="nav-link" href="tuton.php">Data Tuton</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -95,6 +99,14 @@ include('cekadmin.php');
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                                <span>Laporan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="laporanbrg.php">Laporan Data Barang</a></li>
+                                <li><a class="nav-link" href="laporankrywn.php">Laporan Data Karyawan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -132,16 +144,15 @@ include('cekadmin.php');
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-hover" id="table-2">
+                                            <table class="table table-striped table-hover" id="table-karyawan">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">No.</th>
-                                                        <th class="text-center">NIP</th>
                                                         <th class="text-center">Nama Lengkap</th>
                                                         <th class="text-center">Tempat/Tgl. Lahir</th>
                                                         <th class="text-center">Nomor HP</th>
                                                         <th class="text-center">Tanggal Masuk</th>
-                                                        <th class="text-center">Foto</th>
+                                                        <!-- <th class="text-center">Foto</th> -->
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
                                                 </thead>
@@ -174,21 +185,20 @@ include('cekadmin.php');
                                                         return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
                                                     }
                                                     include '../koneksi.php';
-                                                    $query = "SELECT * FROM karyawan k ORDER BY id ASC";
+                                                    $query = "SELECT * FROM karyawan k ORDER BY tgl_masuk ASC";
                                                     $result = mysqli_query($koneksi, $query);
                                                     $no = 1;
-                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                    while ($row = mysqli_fetch_array($result)) {
                                                     ?>
                                                         <tr>
                                                             <td align="center"><?php echo $no++; ?></td>
-                                                            <td align="center"><?php echo $row['nip']; ?></td>
                                                             <td align="center"><a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id']; ?>"><?php echo $row['nama_depan'] ." ". $row['nama_tengah']  ." ". $row['nama_belakang']; ?></a></td>
                                                             <td align="center"><?php echo $row['tempat_lahir'] .", ". date('d/m/Y', strtotime($row['tgl_lahir'])) ; ?></td>
                                                             <td align="center"><?php echo "+62" . number_format($row['nomor_hp_pribadi'], 0, ".", "-"); ?></td>
                                                             <td align="center">
-                                                                <?php echo tanggal_indonesia(date($row['tgl_masuk'])); ?>
+                                                                <?php echo tanggal_indonesia($row['tgl_masuk']); ?>
                                                             </td>
-                                                            <td align="center"><img src="../gambar/<?php echo $row['pas_foto'] ?>" width="100"></td>
+                                                            <!-- <td align="center"><img src="../gambar/<?php echo $row['pas_foto'] ?>" width="100"></td> -->
                                                             <td align="center">
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatekaryawan<?php echo $row['id']; ?>">
                                                                     <i class="fa fa-edit"></i></a>
@@ -267,18 +277,6 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Jenis Kelamin</label>
-                                                                                            <div class="col-sm-8">
-                                                                                                <select name="jk" class="form-control select2" style="width: 100%;">
-                                                                                                    <option>-- Pilih --</option>
-                                                                                                    <option value="Laki-Laki">Laki-Laki</option>
-                                                                                                    <option value="Perempuan">Perempuan</option>
-                                                                                                </select>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
                                                                                             <label class="col-sm-4 col-form-label">Tempat Lahir</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="text" class="form-control" name="tl" value="<?php echo $row['tempat_lahir']; ?>">
@@ -305,7 +303,7 @@ include('cekadmin.php');
                                                                                         <div class="row">
                                                                                             <label class="col-sm-4 col-form-label">Email Kantor</label>
                                                                                             <div class="col-sm-8">
-                                                                                                <input type="text" class="form-control" name="c_email" value="<?php echo $row['email_kantor']; ?>">
+                                                                                                <textarea class="form-control" name="c_email"><?php echo $row['email_kantor']; ?></textarea>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -322,35 +320,6 @@ include('cekadmin.php');
                                                                                             <label class="col-sm-4 col-form-label">Nomor HP Kantor</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="tel" class="form-control" name="phone" value="<?php echo $row['nomor_hp_kantor']; ?>">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Status</label>
-                                                                                            <div class="col-sm-8">
-                                                                                                <select name="status" class="form-control select2" style="width: 100%;">
-                                                                                                    <option>-- Pilih --</option>
-                                                                                                    <option value="Lajang">Lajang</option>
-                                                                                                    <option value="Menikah">Menikah</option>
-                                                                                                    <option value="Cerai">Cerai</option>
-                                                                                                </select>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Jumlah Anak</label>
-                                                                                            <div class="col-sm-8">
-                                                                                                <input type="number" class="form-control" name="anak" value="<?php echo $row['jml_anak']; ?>">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Tanggal Masuk</label>
-                                                                                            <div class="col-sm-8">
-                                                                                                <input type="date" class="form-control" name="tgl_msk" value="<?php echo $row['tgl_masuk']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -383,6 +352,67 @@ include('cekadmin.php');
                                                                                             <label class="col-sm-4 col-form-label">Alamat (Alternatif)</label>
                                                                                             <div class="col-sm-8">
                                                                                                 <textarea class="form-control" name="alamat2"><?php echo $row['alamat_alternatif']; ?></textarea>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Status</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <select name="status" class="form-control select2">
+                                                                                                    <option>-- Pilih --</option>
+                                                                                                    <option value="Lajang">Lajang</option>
+                                                                                                    <option value="Menikah">Menikah</option>
+                                                                                                    <option value="Cerai">Cerai</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Jumlah Anak</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number" class="form-control" name="anak" value="<?php echo $row['jml_anak']; ?>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label" for="jabatan">Jabatan:</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <select name="jabatan" class="form-control select2" style="width: 100%;">
+                                                                                                    <option>-- Pilih --</option>
+                                                                                                    <?php
+                                                                                                    include "../koneksi.php";
+                                                                                                    $sql = mysqli_query($koneksi, "SELECT * FROM jabatan ORDER BY id_jabatan ASC");
+                                                                                                    while ($data = mysqli_fetch_assoc($sql)) {
+                                                                                                    ?>
+                                                                                                        <option value="<?= $data['id_jabatan']; ?>"><?= $data['nama_jabatan'] ?></option>
+                                                                                                    <?php
+                                                                                                    }
+                                                                                                    ?>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div> -->
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Status Kerja
+                                                                                            </label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <select class="form-control select2" name="statuskerja">
+                                                                                                    <option>-- Pilih --</option>
+                                                                                                    <option value="Full Time">Full Time</option>
+                                                                                                    <option value="Magang">Magang</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="row">
+                                                                                            <label class="col-sm-4 col-form-label">Tanggal Masuk</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="date" class="form-control" name="tgl_msk" value="<?php echo $row['tgl_masuk']; ?>">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -442,7 +472,7 @@ include('cekadmin.php');
     </div>
 
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
     
     <!-- nah, ini buat menampilkan data modal dengan ajax, pantengin ya :) -->
     <script>
@@ -470,13 +500,24 @@ include('cekadmin.php');
         });
     </script>
 
+    <script>
+    $(document).ready(function(){
+        $('#table-karyawan').DataTable();
+    });
+    </script>
+
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>
     <!-- JS Libraies -->
+    <!-- Page Specific JS File -->
     <script src="../assets/bundles/datatables/datatables.min.js"></script>
     <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../assets/bundles/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Page Specific JS File -->
+    <script src="../assets/bundles/datatables/export-tables/dataTables.buttons.min.js"></script>
+    <script src="../assets/bundles/datatables/export-tables/buttons.flash.min.js"></script>
+    <script src="../assets/bundles/datatables/export-tables/jszip.min.js"></script>
+    <script src="../assets/bundles/datatables/export-tables/pdfmake.min.js"></script>
+    <script src="../assets/bundles/datatables/export-tables/vfs_fonts.js"></script>
+    <script src="../assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
     <script src="../assets/js/page/datatables.js"></script>
     <!-- Template JS File -->
     <script src="../assets/js/scripts.js"></script>

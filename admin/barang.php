@@ -91,6 +91,10 @@ include('cekadmin.php');
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
+                                <li><a class="nav-link" href="murid.php">Data Murid</a></li>
+                                <li><a class="nav-link" href="tuton.php">Data Tuton</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -98,6 +102,14 @@ include('cekadmin.php');
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                                <span>Laporan</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="laporanbrg.php">Laporan Data Barang</a></li>
+                                <li><a class="nav-link" href="laporankrywn.php">Laporan Data Karyawan</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">
@@ -133,15 +145,16 @@ include('cekadmin.php');
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-hover" id="table-2">
+                                            <table class="table table-striped table-hover" id="table-barang">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">No.</th>
-                                                        <th class="text-center">Kode Barang</a></th>
                                                         <th class="text-center">Nama Barang</th>
-                                                        <th class="text-center">Foto Barang</th>
-                                                        <th class="text-center">Tgl. Bayar</th>
+                                                        <th class="text-center">Jumlah</th>
+                                                        <th class="text-center">Harga Satuan</th>
+                                                        <th class="text-center">Tgl. Beli</th>
                                                         <th class="text-center">Penanggung Jawab</th>
+                                                        <!-- <th class="text-center">Foto Barang</th> -->
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
                                                 </thead>
@@ -149,7 +162,7 @@ include('cekadmin.php');
                                                 <tbody>
                                                     <?php
                                                     include '../koneksi.php';
-                                                    $query = "SELECT * FROM barang b INNER JOIN karyawan k ON b.id_pemegang = k.id ORDER BY id_barang ASC";
+                                                    $query = "SELECT * FROM barang b INNER JOIN karyawan k ON b.id_pemegang = k.id ORDER BY tgl_bayar ASC";
                                                     $result = mysqli_query($koneksi, $query);
                                                    
                                                     $no = 1;
@@ -157,11 +170,12 @@ include('cekadmin.php');
                                                     ?>
                                                         <tr>
                                                             <td align="center"><?php echo $no++; ?></td>
-                                                            <td align="center"><?php echo $row['kode_barang']; ?></td>
                                                             <td align="center"><?php echo $row['nama_barang']; ?></td>
-                                                            <td align="center"><img src="../gambar/<?php echo $row['foto'] ?>" width="100"></td>
-                                                            <td align="center"><?= date('d F Y', strtotime($row['tgl_bayar'])); ?></td>
-                                                            <td align="center"><?php echo $row['nama_depan']; echo $row['nama_belakang']; ?></td>
+                                                            <td align="center"><?php echo $row['qty']; ?></td>
+                                                            <td align="center"><?php echo "IDR " . number_format($row['harga_beli'], 2, ",", "."); ?></td>
+                                                            <td align="center"><?= date('d-m-Y', strtotime($row['tgl_bayar'])); ?></td>
+                                                            <td align="center"><?php echo $row['nama_depan'] ." ". $row['nama_belakang']; ?></td>
+                                                            <!-- <td align="center"><img src="../gambar/<?php echo $row['foto'] ?>" width="100"></td> -->
                                                             <td align="center">
                                                                 <a href="#show" class="view_data btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_barang']; ?>">
                                                                     <i class="fa fa-search"></i>
@@ -276,7 +290,7 @@ include('cekadmin.php');
                                                                                     </div>
                                                                                     <div class="form-group">
                                                                                         <div class="row">
-                                                                                            <label class="col-sm-4 col-form-label">Tgl Bayar
+                                                                                            <label class="col-sm-4 col-form-label">Tgl Beli
                                                                                             </label>
                                                                                             <div class="col-sm-8">
                                                                                                 <input type="date" class="form-control" name="tglbayar" value="<?php echo $row['tgl_bayar']; ?>">
@@ -420,7 +434,7 @@ include('cekadmin.php');
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <div class="row">
-                                                                                    <label class="col-sm-4 col-form-label">Tgl Bayar
+                                                                                    <label class="col-sm-4 col-form-label">Tgl Beli
                                                                                     </label>
                                                                                     <div class="col-sm-8">
                                                                                         <input type="date" class="form-control" name="tglbayar">
@@ -603,7 +617,6 @@ include('cekadmin.php');
     </div>
 
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
     
     <script type="text/javascript">
     $(function () {
@@ -662,6 +675,11 @@ include('cekadmin.php');
                 });
             });
         });
+    </script>
+    <script>
+    $(document).ready(function(){
+        $('#table-barang').DataTable();
+    });
     </script>
 
     <!-- General JS Scripts -->

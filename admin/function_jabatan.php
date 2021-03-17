@@ -6,7 +6,6 @@ if ($_GET['act'] == 'addjabatan') {
     $divisi = $_POST['divisi'];
     $kode = $_POST['kode'];
     $desc = $_POST['desc'];
-    $status = $_POST['status'];
     $gaji = $_POST['gaji'];
     $tunjangan = $_POST['tunjangan'];
     $fasilitas = $_POST['fasilitas'];
@@ -15,9 +14,9 @@ if ($_GET['act'] == 'addjabatan') {
     $naik_gaji = $_POST['naik_gaji'];
     $tgl_naik_gaji = $_POST['tgl_naik_gaji'];
 
-    $querytambah =  mysqli_query($koneksi, "INSERT INTO jabatan SET nama_jabatan='$namajbt', divisi='$divisi', job_desc='$desc', status_kerja='$status', gaji_pokok='$gaji', tunjangan='$tunjangan', fasilitas='$fasilitas', total_gaji= '$total_gaji', tgl_gaji='$tgl_gaji', kenaikan_gaji='$naik_gaji', tgl_naik_gaji='$tgl_naik_gaji', id_departemen ='$kode' ");
+    $querytambah =  mysqli_query($koneksi, "INSERT INTO jabatan SET nama_jabatan='$namajbt', divisi='$divisi', job_desc='$desc', gaji_pokok='$gaji', tunjangan='$tunjangan', fasilitas='$fasilitas', total_gaji= '$total_gaji', tgl_gaji='$tgl_gaji', kenaikan_gaji='$naik_gaji', tgl_naik_gaji='$tgl_naik_gaji', id_departemen ='$kode' ");
     if ($querytambah) {
-        echo "<script> alert('Selamat, data berhasil ditambahkan.');
+        echo "<script> alert('Selamat, data $namajbt berhasil ditambahkan.');
               window.location.href = 'jabatan.php'; </script>";
     } else {
         echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);

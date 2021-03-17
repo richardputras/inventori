@@ -56,11 +56,14 @@ include('cekadmin.php');
       <nav class="navbar navbar-expand-lg main-navbar sticky">
         <div class="form-inline mr-auto">
           <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn"> 
+                    <i data-feather="align-justify"></i>
+                </a>
+            </li>
             <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                <i data-feather="maximize"></i>
-              </a></li>
+                    <i data-feather="maximize"></i>
+                </a>
+            </li>
           </ul>
         </div>
         <ul class="navbar-nav navbar-right">
@@ -88,6 +91,10 @@ include('cekadmin.php');
                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
+                <li><a class="nav-link" href="murid.php">Data Murid</a></li>
+                <li><a class="nav-link" href="tuton.php">Data Tuton</a></li>
               </ul>
             </li>
             <li class="dropdown">
@@ -95,6 +102,14 @@ include('cekadmin.php');
                     <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="perbaikan.php">Perbaikan</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i>
+                    <span>Laporan</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="laporanbrg.php">Laporan Data Barang</a></li>
+                    <li><a class="nav-link" href="laporankrywn.php">Laporan Data Karyawan</a></li>
                 </ul>
             </li>
             <li class="dropdowm">
@@ -110,6 +125,14 @@ include('cekadmin.php');
       <!-- Main Content -->
       <div class="main-content">
         <section class="content">
+          <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                <a href="../dashboard.php">Home</a>
+                <i class="icon-angle-right"></i>
+            </li>
+            <li>Data Perbaikan</li>
+          </ul>
           <div class="section-body">
             <div class="row">
               <div class="col-12">
@@ -121,7 +144,7 @@ include('cekadmin.php');
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-hover" id="table-2">
+                      <table class="table table-striped table-hover" id="table-perbaikan">
                         <thead>
                           <tr>
                             <th class="text-center">No.</th>
@@ -402,7 +425,7 @@ include('cekadmin.php');
     </div>
 
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
     
     <script type="text/javascript">
     $(function () {
@@ -420,6 +443,12 @@ include('cekadmin.php');
                 $("#solusi").hide();
             }
         });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function(){
+        $('#table-perbaikan').DataTable();
     });
     </script>
 

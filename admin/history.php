@@ -97,6 +97,8 @@ if (!isset($_SESSION['user_id'])) {
                                 <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
+                                <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
+                                <li><a class="nav-link" href="kelas.php">Data Kelas</a></li>
                             </ul>
                         </li>
                         <li class="dropdowm">

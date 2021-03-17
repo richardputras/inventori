@@ -14,7 +14,7 @@ if ($_GET['act'] == 'addsupplier') {
 
     $querytambah =  mysqli_query($koneksi, "INSERT INTO supplier SET kode_supplier='$kode', nama_supplier='$namasup', alamat='$alamat', kota='$kota', telepon='$phone', bank='$bank', no_rek='$norek', contact_person='$cp', no_contact_person='$nocp' ");
     if ($querytambah) {
-        echo "<script> alert('Selamat, data berhasil ditambahkan.');
+        echo "<script> alert('Selamat, data $namasup berhasil ditambahkan.');
               window.location.href = 'supplier.php'; </script>";
     } else {
         echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);

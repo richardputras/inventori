@@ -82,20 +82,7 @@ include('cekadmin.php');
                         <li class="dropdown active">
                             <a href="../dashboard.php" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="database"></i>
-                                <span>Master Data</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
-                                <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
-                                <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
-                                <li><a class="nav-link" href="barang.php">Data Barang</a></li>
-                                <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdowm">
-                            <a class="nav-link" href="history.php"><i data-feather="rotate-ccw"></i>History</a>
-                        </li>
+                        
                         <li class="menu-header">Settings</li>
                         <li class="dropdown">
                             <a href="../logout.php" class="nav-link"><i data-feather="log-out"></i><span>Logout</span></a>
@@ -161,35 +148,35 @@ include('cekadmin.php');
                                     $jbt = input($_POST['jabatan']);
 
                                     $nama_file1 = $_FILES['pas_foto']['name'];
-                                    $ukuran_file = $_FILES['pas_foto']['size'];
-                                    $tipe_file = $_FILES['pas_foto']['type'];
-                                    $tmp_file = $_FILES['pas_foto']['tmp_name'];
+                                    $ukuran_file1 = $_FILES['pas_foto']['size'];
+                                    $tipe_file1 = $_FILES['pas_foto']['type'];
+                                    $tmp_file1 = $_FILES['pas_foto']['tmp_name'];
 
                                     $nama_file2 = $_FILES['foto_ktp']['name'];
-                                    $ukuran_file = $_FILES['foto_ktp']['size'];
-                                    $tipe_file = $_FILES['foto_ktp']['type'];
-                                    $tmp_file = $_FILES['foto_ktp']['tmp_name'];
+                                    $ukuran_file2 = $_FILES['foto_ktp']['size'];
+                                    $tipe_file2 = $_FILES['foto_ktp']['type'];
+                                    $tmp_file2 = $_FILES['foto_ktp']['tmp_name'];
 
                                     $nama_file3 = $_FILES['foto_kk']['name'];
-                                    $ukuran_file = $_FILES['foto_kk']['size'];
-                                    $tipe_file = $_FILES['foto_kk']['type'];
-                                    $tmp_file = $_FILES['foto_kk']['tmp_name'];
+                                    $ukuran_file3 = $_FILES['foto_kk']['size'];
+                                    $tipe_file3 = $_FILES['foto_kk']['type'];
+                                    $tmp_file3 = $_FILES['foto_kk']['tmp_name'];
 
                                     $nama_file4 = $_FILES['foto_npwp']['name'];
-                                    $ukuran_file = $_FILES['foto_npwp']['size'];
-                                    $tipe_file = $_FILES['foto_npwp']['type'];
-                                    $tmp_file = $_FILES['foto_npwp']['tmp_name'];
+                                    $ukuran_file4 = $_FILES['foto_npwp']['size'];
+                                    $tipe_file4 = $_FILES['foto_npwp']['type'];
+                                    $tmp_file4 = $_FILES['foto_npwp']['tmp_name'];
 
                                     $nama_file5 = $_FILES['foto_ijazah']['name'];
-                                    $ukuran_file = $_FILES['foto_ijazah']['size'];
-                                    $tipe_file = $_FILES['foto_ijazah']['type'];
-                                    $tmp_file = $_FILES['foto_ijazah']['tmp_name'];
+                                    $ukuran_file5 = $_FILES['foto_ijazah']['size'];
+                                    $tipe_file5 = $_FILES['foto_ijazah']['type'];
+                                    $tmp_file5 = $_FILES['foto_ijazah']['tmp_name'];
 
-                                    $path = '../gambar/' . $nama_file1;
-                                    $path = '../gambar/' . $nama_file2;
-                                    $path = '../gambar/' . $nama_file3;
-                                    $path = '../gambar/' . $nama_file4;
-                                    $path = '../gambar/' . $nama_file5;
+                                    $path1 = '../gambar/' . $nama_file1;
+                                    $path2 = '../gambar/' . $nama_file2;
+                                    $path3 = '../gambar/' . $nama_file3;
+                                    $path4 = '../gambar/' . $nama_file4;
+                                    $path5 = '../gambar/' . $nama_file5;
 
                                     if ($ukuran_file <= 2000000) { // Cek apakah ukuran file yang diupload kurang dari sama dengan 1MB
                                         // Jika ukuran file kurang dari sama dengan 2MB, lakukan :
@@ -201,27 +188,64 @@ include('cekadmin.php');
                                             $hasil = mysqli_query($koneksi, $sql);
 
                                             if ($hasil) {
-                                                echo "<script> alert('Selamat, data $nama berhasil ditambahkan.');
+                                                echo "<script> alert('Selamat, data $namadepan berhasil ditambahkan.');
                                                       window.location.href = 'karyawan.php'; </script>";
                                             }
                                             else {
                                                 echo "ERROR, data gagal ditambahkan!" . mysqli_error($koneksi);
                                             }
-                                        } 
+                                        }
                                         else{
-                                            if (move_uploaded_file($tmp_file, $path)) { // Cek apakah gambar berhasil diupload atau tidak
+                                            if (move_uploaded_file($tmp_file1, $path1)) { // Cek apakah gambar berhasil diupload atau tidak
                                                 // Jika gambar berhasil diupload, Lakukan :  
                                                 // Proses simpan ke Database
 
                                                 //Query input menginput data kedalam tabel karyawan
                                                 $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
                                                 alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_kantor = '$emailc', 
-                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', pas_foto = '" . $nama_file1 . "', foto_ktp = '" . $nama_file2 . "',  
-                                                foto_kk = '" . $nama_file3 . "', foto_npwp = '" . $nama_file4 . "', foto_ijazah = '" . $nama_file5 . "', id_jabatan = '$jbt' ";
+                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', pas_foto = '" . $nama_file1 . "', id_jabatan = '$jbt' ";
                                                 $hasil = mysqli_query($koneksi, $sql);
 
                                                 if ($hasil) {
-                                                echo "<script> alert('Selamat, data $nama berhasil ditambahkan.');
+                                                echo "<script> alert('Selamat, data $namadepan berhasil ditambahkan.');
+                                                      window.location.href = 'karyawan.php'; </script>";
+                                                } else {
+                                                echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
+                                                }
+                                            } else {
+                                                echo "Maaf, Gambar gagal untuk diupload.";
+                                            }
+                                            if (move_uploaded_file($tmp_file2, $path2)) { // Cek apakah gambar berhasil diupload atau tidak
+                                                // Jika gambar berhasil diupload, Lakukan :  
+                                                // Proses simpan ke Database
+
+                                                //Query input menginput data kedalam tabel karyawan
+                                                $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+                                                alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_kantor = '$emailc', 
+                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', foto_ktp = '" . $nama_file2 . "', id_jabatan = '$jbt' ";
+                                                $hasil = mysqli_query($koneksi, $sql);
+
+                                                if ($hasil) {
+                                                echo "<script> alert('Selamat, data $namadepan berhasil ditambahkan.');
+                                                      window.location.href = 'karyawan.php'; </script>";
+                                                } else {
+                                                echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
+                                                }
+                                            } else {
+                                                echo "Maaf, Gambar gagal untuk diupload.";
+                                            }
+                                            if (move_uploaded_file($tmp_file3, $path3)) { // Cek apakah gambar berhasil diupload atau tidak
+                                                // Jika gambar berhasil diupload, Lakukan :  
+                                                // Proses simpan ke Database
+
+                                                //Query input menginput data kedalam tabel karyawan
+                                                $sql = "INSERT INTO karyawan SET nip = '$nip', nik = '$nik', nama_depan = '$namadepan', nama_tengah = '$namatengah', nama_belakang = '$namabelakang', jenis_kelamin = '$jk', tempat_lahir = '$tl', tgl_lahir = '$tgllahir', 
+                                                alamat = '$alamat', alamat_alternatif = '$alamat2', rt_rw = '$rt_rw', kode_pos = '$kode_pos', provinsi = '$provinsi', kabupaten = '$kabupaten', kecamatan = '$kecamatan', email_pribadi = '$emailp', email_kantor = '$emailc', 
+                                                nomor_hp_pribadi = '$noHP', nomor_hp_kantor = '$noTelp', status = '$status', jml_anak = '$anak', tgl_masuk = '$tglmsk', foto_kk = '" . $nama_file3 . "', id_jabatan = '$jbt' ";
+                                                $hasil = mysqli_query($koneksi, $sql);
+
+                                                if ($hasil) {
+                                                echo "<script> alert('Selamat, data $namadepan berhasil ditambahkan.');
                                                       window.location.href = 'karyawan.php'; </script>";
                                                 } else {
                                                 echo "<div class='alert alert-danger'> Data gagal ditambahkan!</div>" . mysqli_error($koneksi);
@@ -254,7 +278,7 @@ include('cekadmin.php');
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="nik">Nama Belakang:</label>
-                                                <input type="text" name="ln" class="form-control" placeholder="Nama Belakang" required>
+                                                <input type="text" name="ln" class="form-control" placeholder="Nama Belakang">
                                             </div>
                                         </div>
 
@@ -315,10 +339,6 @@ include('cekadmin.php');
                                                 <input type="number" name="anak" class="form-control" placeholder="Jumlah Anak">
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label for="tgl_msk">Tanggal Masuk:</label>
-                                                <input type="date" data-date-format="DD MMMM YYYY" name="tgl_msk" class="form-control" placeholder="Tanggal Masuk">
-                                            </div>
-                                            <div class="form-group col-md-3">
                                                 <label for="jabatan">Jabatan:</label>
                                                 <select name="jabatan" class="form-control select2" style="width: 100%;">
                                                     <option>-- Pilih --</option>
@@ -332,6 +352,10 @@ include('cekadmin.php');
                                                     }
                                                     ?>
                                                 </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="tgl_msk">Tanggal Masuk:</label>
+                                                <input type="date" data-date-format="DD MMMM YYYY" name="tgl_msk" class="form-control" placeholder="Tanggal Masuk">
                                             </div>
                                         </div>
 
