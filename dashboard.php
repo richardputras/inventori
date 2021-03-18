@@ -1,22 +1,22 @@
 <?php
 
 include('admin/cekadmin.php');
-session_start();
+// session_start();
 // jika ada session
-if(isset($_SESSION["username"])){
+// if(isset($_SESSION["username"])){
 
     // jika tidak ada aktivitas pada browser selama 60 detik, maka ...
-    if((time() - $_SESSION["last_login_time"]) > 60){
+    // if((time() - $_SESSION["last_login_time"]) > 60){
     
         // akan diarahkan kehalaman logout.php
-        header("location: logout.php");
-    }
+        // header("location: logout.php");
+    // }
     
-    else {
+    // else {
     // jika ada aktivitas, maka update tambah waktu session
-        $_SESSION["last_login_time"] = time();
-    }
-}
+       // $_SESSION["last_login_time"] = time();
+    // }
+//}
 
 ?>
 

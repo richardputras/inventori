@@ -7,7 +7,7 @@ include "koneksi.php";
 if (isset($_POST['submit'])) {
 	$username	=  htmlspecialchars($_POST['username']);
 	$password	=  $_POST['password'];
-	$_SESSION["last_login_time"] = time(); // waktu model UNIX time() -> mengambil waktu dalam bentuk string time
+	// $_SESSION["last_login_time"] = time(); // waktu model UNIX time() -> mengambil waktu dalam bentuk string time
 
 	$username = mysqli_real_escape_string($koneksi, $username);
 	$password = mysqli_real_escape_string($koneksi, $password);
