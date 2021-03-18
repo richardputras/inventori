@@ -10,6 +10,9 @@ include('cekadmin.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <?php
+        include '../koneksi.php';
+    ?>
     <title>Halaman Murid</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="../assets/css/app.min.css">
@@ -129,207 +132,170 @@ include('cekadmin.php');
               </li>
               <li>Data Murid</li>
             </ul>
-          <div class="section-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3>Data Murid</h3>
-                    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addmurid"><i class="fa fa-plus"></i>Tambah Data
-                    </button> -->
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <form action="import_excel2.php" method="POST" enctype="multipart/form-data" >
-                        <table border="0" class="table">
-                            <tr>
-                                <td width="25%">Pilih File</td>
-                                <td width="75%"><input type="file" name="namafile" maxlength="255"/></td>
-                            </tr>
-                            <tr>
-                                <td> </td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary" name="upload" value="upload">Import</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="lihat_hasil2.php" type="submit" name="view" value="view">View Tabel</a></td>
-                                <td> </td>
-                            </tr>
-                        </table>
-                      </form>    
-                      <!-- <table class="table table-striped table-hover" id="table-murid">
-                        <thead>
-                          <tr>
-                          <th class="text-center">No.</th>
-                          <th class="text-center">Nama Lengkap</th>
-                            <th class="text-center">Jenis Kelamin</th>
-                            <th class="text-center">Tempat/Tgl Lahir</th>
-                            <th class="text-center">Usia</th>
-                            <th class="text-center">Alamat/Kota</th>
-                            <th class="text-center">Agama</th>
-                            <th class="text-center">Opsi</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          <?php
-                          include '../koneksi.php';
+            <div class="section-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3>Data Murid</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                  <form method="POST" enctype="multipart/form-data" >
+                                    <table border="0" class="table">
+                                        <tr>
+                                            <td width="25%">Pilih File:</td>
+                                            <td width="75%"><input type="file" name="namafile" required="required" maxlength="255"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td> </td>
+                                            <td>
+                                                <input name="upload" type="submit" value="Import" class="btn btn-primary">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="lihat_hasil2.php" type="submit" name="view" value="view">View Tabel</a></td>
+                                            <td> </td>
+                                        </tr>
+                                    </table>
+                                  </form>
                           
-
-                          $query = "SELECT nama_depan, nama_tengah, nama_belakang, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama, TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia FROM murid";
-                          $result = mysqli_query($koneksi, $query);
-                          $no = 1;
-                          
-                          while ($row = mysqli_fetch_array($result)) {
-                          ?>
-                            <tr>
-                              <td align="center"><?php echo $no++; ?></td>
-                              <td align="center"><?php echo $row['nama_depan'] ." ". $row['nama_belakang']; ?></td>
-                              <td align="center"><?php echo $row['jenis_kelamin']; ?></a></td>
-                              <td align="center"><?php echo $row['tempat_lahir'] ." / ". $row['tgl_lahir']; ?></td>
-                              <td align="center"><?php echo $row['usia'] ." tahun" ?></td>
-                              <td align="center"><?php echo $row['alamat'] .", ". $row['kota']; ?></td>
-                              <td align="center"><?php echo $row['agama']; ?></td>
-                              <td align="center">
-                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatemurid<?php echo $row['id']; ?>">
-                                  <i class="fa fa-edit"></i></a>
-                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deletemurid<?php echo $row['id']; ?>">
-                                  <i class="fa fa-trash"></i></a>
-                              </td>
-                              
-                              <!-- modal delete -->
-                              <!-- <div class="example-modal">
-                                <div id="deletemurid<?php echo $row['id']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
-                                  <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h3 class="modal-title">Konfirmasi Delete Data</h3>
-                                      </div>
-                                      <div class="modal-body">
-                                        <h5 align="center">Apakah anda yakin ingin menghapus data ini <strong><span class="grt"></span></strong> ?</h5>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button id="nodelete" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
-                                        <a href="function_murid.php?act=deletemurid&id=<?php echo $row['id']; ?>" class="btn btn-primary">Delete</a>
+                                  <?php
+                                    if (isset($_POST['upload'])) {
+            
+                                      require('spreadsheet-reader-master/php-excel-reader/excel_reader2.php');
+                                      require('spreadsheet-reader-master/SpreadsheetReader.php');
+            
+                                      //upload data excel kedalam folder uploads
+                                      $target_dir = "uploads/".basename($_FILES['namafile']['name']);
+                                      
+                                      move_uploaded_file($_FILES['namafile']['tmp_name'],$target_dir);
+                                    
+                                      $Reader = new SpreadsheetReader($target_dir);
+                                    
+                                      foreach ($Reader as $Key => $Row)
+                                      {
+                                       // import data excel mulai baris ke-2 (karena ada header pada baris 1)
+                                       if ($Key < 1) continue;
+                                           $query = mysqli_query($koneksi, "INSERT INTO murid(id, nama_lengkap, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama) VALUES ('".$Row[0]."', '".$Row[1]."', '".$Row[2]."', '".$Row[3]."', '".$Row[4]."', '".$Row[5]."', '".$Row[6]."', '".$Row[7]."')");
+                                      }
+                                      if ($query) {
+                                          echo "Import data berhasil!";
+                                      }
+                                      else{
+                                          echo mysql_error();
+                                      }
+                                    }
+                                  ?>
+                      
+                                <!-- <div class="example-modal">
+                                    <div id="addmurid" class="modal fade" role="dialog" style="display:none;">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h3 class="modal-title">Tambah Data Murid</h3>
+                                          </div>
+                                          <form action="function_murid.php?act=addmurid" method="post" role="form">
+                                            <div class="modal-body">
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Nama Depan</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="fname" placeholder="Nama Depan">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Nama Tengah</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="mname" placeholder="Nama Tengah">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Nama Belakang</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="sname" placeholder="Nama Belakang">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                    <label class="col-sm-4 col-form-label">Jenis Kelamin</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control select2" name="jk">
+                                                            <option>-- Pilih --</option>
+                                                            <option value="L">Laki-Laki</option>
+                                                            <option value="P">Perempuan</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Tempat Lahir</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="tempat" placeholder="Tempat Lahir">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="date" class="form-control" name="tgl">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Alamat</label>
+                                                  <div class="col-sm-8">
+                                                    <textarea class="form-control" name="alamat"></textarea>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Kota</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="kota" placeholder="Kota">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <div class="row">
+                                                  <label class="col-sm-4 col-form-label">Agama</label>
+                                                  <div class="col-sm-8">
+                                                    <select class="form-control select2" name="agama">
+                                                      <option>-- Pilih --</option>
+                                                      <option value="Islam">Islam</option>
+                                                      <option value="Kristen">Kristen Protestan</option>
+                                                      <option value="Katolik">Kristen Katolik</option>
+                                                      <option value="Hindu">Hindu</option>
+                                                      <option value="Buddha">Buddha</option>
+                                                      <option value="Konghucu">Konghucu</option>
+                                                    </select>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button id="nosave" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                                              </div>
+                                          </form>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> -->
                                 </div>
-                              </div><!-- modal delete -->
-                            <!-- </tr> -->
-                        <?php
-                          }
-                        ?>
-                        <!-- <div class="example-modal">
-                            <div id="addmurid" class="modal fade" role="dialog" style="display:none;">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h3 class="modal-title">Tambah Data Murid</h3>
-                                  </div>
-                                  <form action="function_murid.php?act=addmurid" method="post" role="form">
-                                    <div class="modal-body">
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Nama Depan</label>
-                                          <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="fname" placeholder="Nama Depan">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Nama Tengah</label>
-                                          <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="mname" placeholder="Nama Tengah">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Nama Belakang</label>
-                                          <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="sname" placeholder="Nama Belakang">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                            <label class="col-sm-4 col-form-label">Jenis Kelamin</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control select2" name="jk">
-                                                    <option>-- Pilih --</option>
-                                                    <option value="L">Laki-Laki</option>
-                                                    <option value="P">Perempuan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Tempat Lahir</label>
-                                          <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="tempat" placeholder="Tempat Lahir">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
-                                          <div class="col-sm-8">
-                                            <input type="date" class="form-control" name="tgl">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Alamat</label>
-                                          <div class="col-sm-8">
-                                            <textarea class="form-control" name="alamat"></textarea>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Kota</label>
-                                          <div class="col-sm-8">
-                                            <input type="text" class="form-control" name="kota" placeholder="Kota">
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <label class="col-sm-4 col-form-label">Agama</label>
-                                          <div class="col-sm-8">
-                                            <select class="form-control select2" name="agama">
-                                              <option>-- Pilih --</option>
-                                              <option value="Islam">Islam</option>
-                                              <option value="Kristen">Kristen Protestan</option>
-                                              <option value="Katolik">Kristen Katolik</option>
-                                              <option value="Hindu">Hindu</option>
-                                              <option value="Buddha">Buddha</option>
-                                              <option value="Konghucu">Konghucu</option>
-                                            </select>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button id="nosave" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" name="submit" class="btn btn-primary">Add</button>
-                                      </div>
-                                  </form>
-                                </div>
-                              </div>
                             </div>
-                          </div> -->
-                        </tbody>
-                      </table>
-                  </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </section>
       </div>
       <footer class="main-footer">
@@ -338,27 +304,21 @@ include('cekadmin.php');
         </div>
       </footer>
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    
-    <script>
-    $(document).ready(function(){
-        $('#table-murid').DataTable();
-    });
-    </script>
+  </div>  
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <!-- General JS Scripts -->
-    <script src="../assets/js/app.min.js"></script>
-    <!-- JS Libraies -->
-    <script src="../assets/bundles/datatables/datatables.min.js"></script>
-    <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../assets/bundles/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Page Specific JS File -->
-    <script src="../assets/js/page/datatables.js"></script>
-    <!-- Template JS File -->
-    <script src="../assets/js/scripts.js"></script>
-    <!-- Custom JS File -->
-    <script src="../assets/js/custom.js"></script>
+  <!-- General JS Scripts -->
+  <script src="../assets/js/app.min.js"></script>
+  <!-- JS Libraies -->
+  <script src="../assets/bundles/datatables/datatables.min.js"></script>
+  <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/bundles/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="../assets/js/page/datatables.js"></script>
+  <!-- Template JS File -->
+  <script src="../assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="../assets/js/custom.js"></script>
 </body>
 
 </html>

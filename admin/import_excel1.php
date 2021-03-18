@@ -1,6 +1,6 @@
 <?php
     include "../koneksi.php";
-    include "../ExcelReader/excel_reader2.php";
+    include "../libraries/ExcelReader/excel_reader2.php";
     
     if ($_POST['upload'] == "upload") {
         $type = explode(".",$_FILES['namafile']['name']);

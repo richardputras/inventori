@@ -122,9 +122,8 @@ include('cekadmin.php');
                         <tbody>
                           <?php
                           include '../koneksi.php';
-                          
 
-                          $query = "SELECT nama_depan, nama_tengah, nama_belakang, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama, TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia FROM murid";
+                          $query = "SELECT nama_lengkap, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama, TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia FROM murid";
                           $result = mysqli_query($koneksi, $query);
                           $no = 1;
                           
@@ -132,7 +131,7 @@ include('cekadmin.php');
                           ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
-                              <td align="center"><?php echo $row['nama_depan'] ." ". $row['nama_belakang']; ?></td>
+                              <td align="center"><?php echo $row['nama_lengkap']; ?></td>
                               <td align="center"><?php echo $row['jenis_kelamin']; ?></a></td>
                               <td align="center"><?php echo $row['tempat_lahir'] ." / ". $row['tgl_lahir']; ?></td>
                               <td align="center"><?php echo $row['usia'] ." tahun" ?></td>

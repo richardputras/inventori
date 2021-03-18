@@ -174,12 +174,6 @@ include('cekadmin.php');
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     
-    <script>
-    $(document).ready(function(){
-        $('#table-tuton').DataTable();
-    });
-    </script>
-
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>
     <!-- JS Libraies -->

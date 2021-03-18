@@ -324,12 +324,6 @@ include('cekadmin.php');
         });
     });
     </script>
-    
-    <script>
-    $(document).ready(function(){
-        $('#table-kelas').DataTable();
-    });
-    </script>
 
     <!-- General JS Scripts -->
     <script src="../assets/js/app.min.js"></script>
