@@ -28,49 +28,45 @@ if ($_POST['id']) {
                <td>' . $row_view['nama_barang'] . '</td>
             </tr>
             <tr>
-				   <th>DESKRIPSI BARANG</th>
-				   <td>' . $row_view['deskripsi'] . '</td>
+			   <th>DESKRIPSI BARANG</th>
+			   <td>' . $row_view['deskripsi'] . '</td>
             </tr>
             <tr>
-				   <th>JUMLAH</th>
-				   <td>' . $row_view['qty'] . '</td>
+			   <th>JUMLAH</th>
+			   <td>' . $row_view['qty'] . '</td>
             </tr>
             <tr>
-				   <th>SATUAN</th>
-				   <td>' . $row_view['satuan'] . '</td>
+		       <th>SATUAN</th>
+			   <td>' . $row_view['satuan'] . '</td>
             </tr>
             <tr>
-				   <th>TGL. BAYAR</th>
-				   <td>' . date('d F Y', strtotime($row_view['tgl_bayar'])) . '</td>
+			   <th>TGL. BELI</th>
+			   <td>' . date('d F Y', strtotime($row_view['tgl_bayar'])) . '</td>
             </tr>
             <tr>
-				   <th>TGL. TERIMA BARANG</th>
-				   <td>' . date('d F Y', strtotime($row_view['tgl_terima'])) . '</td>
+			   <th>TGL. TERIMA BARANG</th>
+			   <td>' . date('d F Y', strtotime($row_view['tgl_terima'])) . '</td>
             </tr>
             <tr>
                <th>HARGA BELI</th>
                <td>' . "IDR" . ' ' . number_format($row_view['harga_beli'], 2, ",", ".") . '</td>
             </tr>
             <tr>
-               <th>HARGA JUAL</th>
-               <td>' . "IDR" . ' ' . number_format($row_view['harga_jual'], 2, ",", ".") . '</td>
+			   <th>KONDISI BARANG</th>
+		       <td>' . $row_view['kondisi_barang'] . '</td>
+			</tr>
+			<tr>
+			   <th>STATUS BARANG</th>
+			   <td>' . $row_view['status_barang'] . '</td>
             </tr>
             <tr>
-				   <th>KONDISI BARANG</th>
-				   <td>' . $row_view['kondisi_barang'] . '</td>
-			   </tr>
-			   <tr>
-				   <th>STATUS BARANG</th>
-				   <td>' . $row_view['status_barang'] . '</td>
-            </tr>
-            <tr>
-				   <th>GARANSI</th>
-				   <td>' . $row_view['garansi'] . '</td>
-			   </tr>
-			   <tr>
-				   <th>SUPPLIER</th>
-				   <td>' . $row_view['nama_supplier'] . '</td>
-			   </tr>
+			   <th>GARANSI</th>
+			   <td>' . $row_view['garansi'] . '</td>
+			</tr>
+			<tr>
+			   <th>SUPPLIER</th>
+			   <td>' . $row_view['nama_supplier'] . '</td>
+			</tr>
 		    </table>
         ';
       }

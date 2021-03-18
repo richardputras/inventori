@@ -8,7 +8,7 @@ if (isset($_POST['provinsi'])) {
     $hasil = mysqli_query($koneksi, $sql);
     while ($data = mysqli_fetch_array($hasil)) {
 ?>
-        <option value="<?php echo $data['id_kab']; ?>"><?php echo $data['nama']; ?></option>
+        <option value="<?php echo $data['id_kab']; ?>"><?php echo $data['nama_kab']; ?></option>
     <?php
     }
 }
@@ -19,7 +19,7 @@ if (isset($_POST['kabupaten'])) {
     $hasil = mysqli_query($koneksi, $sql);
     while ($data = mysqli_fetch_array($hasil)) {
     ?>
-        <option value="<?php echo $data['id_kec']; ?>"><?php echo $data['nama']; ?></option>
+        <option value="<?php echo $data['id_kec']; ?>"><?php echo $data['nama_kec']; ?></option>
 <?php
     }
 }

@@ -32,10 +32,6 @@ if ($_POST['id']) {
 				   <td>' . $row_view['job_desc'] . '</td>
 			   </tr>
 			   <tr>
-				   <th>STATUS KERJA</th>
-				   <td>' . $row_view['status_kerja'] . '</td>
-			   </tr>
-			   <tr>
 				   <th>GAJI POKOK</th>
 				   <td>' . "IDR " . number_format($row_view['gaji_pokok'], 2, ",", ".") . '</td>
             </tr>
@@ -50,10 +46,6 @@ if ($_POST['id']) {
             <tr>
 				   <th>TOTAL GAJI</th>
 				   <td>' . "IDR " . number_format($row_view['total_gaji'], 2, ",", ".") . '</td>
-            </tr>
-            <tr>
-				   <th>TGL GAJI</th>
-				   <td>' . $row_view['tgl_gaji'] . '</td>
             </tr>
             <tr>
 				   <th>KENAIKAN GAJI</th>
