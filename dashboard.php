@@ -125,9 +125,6 @@ include('admin/cekadmin.php');
                             </a></li>
                     </ul>
                 </div>
-                <ul class="navbar-nav navbar-right">
-
-                </ul>
             </nav>
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
@@ -147,13 +144,15 @@ include('admin/cekadmin.php');
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="admin/user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="admin/karyawan.php">Data Karyawan</a></li>
-                                <li><a class="nav-link" href="admin/jabatan.php">Data Jabatan</a></li>
+                                <!-- <li><a class="nav-link" href="admin/jabatan.php">Data Jabatan</a></li> -->
                                 <li><a class="nav-link" href="admin/barang.php">Data Barang</a></li>
+                                <li><a class="nav-link" href="admin/konsumsi.php">Data Konsumsi</a></li>
                                 <li><a class="nav-link" href="admin/supplier.php">Data Supplier</a></li>
                                 <li><a class="nav-link" href="admin/rpp.php">Data RPP</a></li>
                                 <li><a class="nav-link" href="admin/kelas.php">Data Kelas</a></li>
                                 <li><a class="nav-link" href="admin/murid.php">Data Murid</a></li>
                                 <li><a class="nav-link" href="admin/tuton.php">Data Tuton</a></li>
+                                <!-- <li><a class="nav-link" href="admin/banksoal.php">Data Soal</a></li> -->
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -173,6 +172,9 @@ include('admin/cekadmin.php');
                         </li>
                         <li class="dropdowm">
                             <a class="nav-link" href="admin/history.php"><i data-feather="rotate-ccw"></i>History</a>
+                        </li>
+                        <li class="dropdowm">
+                            <a class="nav-link" href="form_pengajuan.php"><i data-feather="file-text"></i>Form Pengajuan</a>
                         </li>
                         <li class="menu-header">Settings</li>
                         <li class="dropdown">
@@ -267,7 +269,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlOpt FROM user");
                                                         $opt = $sql->fetch_assoc();
                                                         ?>
-                                                            <h5 class="font-15">Total Data Pengguna</h5>
+                                                        <h5 class="font-15">Total Pengguna</h5>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
                                                         <p class="mb-0"><a href='admin/user.php'>Lihat Detail</a></p>
                                                     </div>
@@ -294,7 +296,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlOpt FROM karyawan");
                                                         $opt = $sql->fetch_assoc();
                                                         ?>
-                                                        <h5 class="font-15">Total Data Karyawan</h5>
+                                                        <h5 class="font-15">Total Karyawan</h5>
                                                         <h2 class="mb-3 font-18"><?= $opt['jmlOpt']; ?></h2>
                                                         <p class="mb-0"><a href='admin/karyawan.php' style="color: green;">Lihat Detail</a></p>
                                                     </div>
@@ -321,7 +323,7 @@ include('admin/cekadmin.php');
                                                         $sql = $koneksi->query("SELECT COUNT(*) AS jmlStok FROM barang");
                                                         $stok = $sql->fetch_assoc();
                                                         ?>
-                                                        <h5 class="font-16">Total Data Barang</h5>
+                                                        <h5 class="font-16">Total Barang</h5>
                                                         <h2 class="mb-3 font-18"><?= $stok['jmlStok']; ?></h2>
                                                         <p class="mb-0"><a href='admin/barang.php'>Lihat Detail</a></p>
                                                     </div>
@@ -336,7 +338,7 @@ include('admin/cekadmin.php');
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <div class="card">
                                     <div class="card-statistic-4">
                                         <div class="align-items-center justify-content-between">
@@ -362,8 +364,7 @@ include('admin/cekadmin.php');
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div>       -->
                         </div>
                     </div>
                 </section>
