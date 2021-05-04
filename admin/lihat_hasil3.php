@@ -102,7 +102,7 @@ include('cekadmin.php');
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>Data RPP</h3>
-                    <a href="../">Kembali</a>
+                    <a href="../admin/rpp.php">Kembali</a>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -116,6 +116,7 @@ include('cekadmin.php');
                             <th class="text-center">Semester</th>
                             <th class="text-center">Bab/Tema</th>
                             <th class="text-center">SubBab/SubTema</th>
+                            <th class="text-center">Bulan Pembuatan</th>
                           </tr>
                         </thead>
 
@@ -137,6 +138,8 @@ include('cekadmin.php');
                               <td align="center"><?php echo $row['semester']; ?></td>
                               <td align="center"><?php echo $row['tema']; ?></td>
                               <td align="center"><?php echo $row['subtema']; ?></td>
+                              <td align="center"><?php echo $row['bulan_pembuatan']; ?></td>
+                              
                             </tr> 
                           <?php
                           }

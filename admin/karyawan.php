@@ -85,7 +85,7 @@ include('cekadmin.php');
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
-                                <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
+                                <!-- <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li> -->
                                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                                 <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
@@ -152,6 +152,7 @@ include('cekadmin.php');
                                                         <th class="text-center">Tempat/Tgl. Lahir</th>
                                                         <th class="text-center">Nomor HP</th>
                                                         <th class="text-center">Tanggal Masuk</th>
+                                                        <th class="text-center">Status</th>
                                                         <!-- <th class="text-center">Foto</th> -->
                                                         <th class="text-center">Opsi</th>
                                                     </tr>
@@ -198,6 +199,7 @@ include('cekadmin.php');
                                                             <td align="center">
                                                                 <?php echo tanggal_indonesia($row['tgl_masuk']); ?>
                                                             </td>
+                                                            <td align="center"><?php echo $row['status_kerja']; ?></td>
                                                             <!-- <td align="center"><img src="../gambar/<?php echo $row['pas_foto'] ?>" width="100"></td> -->
                                                             <td align="center">
                                                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatekaryawan<?php echo $row['id']; ?>">
@@ -404,6 +406,8 @@ include('cekadmin.php');
                                                                                                     <option>-- Pilih --</option>
                                                                                                     <option value="Full Time">Full Time</option>
                                                                                                     <option value="Magang">Magang</option>
+                                                                                                    <option value="Part Time">Part Time</option>
+                                                                                                    <option value="Freelance">Freelance</option>
                                                                                                 </select>
                                                                                             </div>
                                                                                         </div>
@@ -513,11 +517,6 @@ include('cekadmin.php');
     <script src="../assets/bundles/datatables/datatables.min.js"></script>
     <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="../assets/bundles/datatables/export-tables/dataTables.buttons.min.js"></script>
-    <script src="../assets/bundles/datatables/export-tables/buttons.flash.min.js"></script>
-    <script src="../assets/bundles/datatables/export-tables/jszip.min.js"></script>
-    <script src="../assets/bundles/datatables/export-tables/pdfmake.min.js"></script>
-    <script src="../assets/bundles/datatables/export-tables/vfs_fonts.js"></script>
-    <script src="../assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
     <script src="../assets/js/page/datatables.js"></script>
     <!-- Template JS File -->
     <script src="../assets/js/scripts.js"></script>

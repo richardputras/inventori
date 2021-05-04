@@ -14,8 +14,6 @@ include('cekadmin.php');
     <title>Halaman Karyawan</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="../assets/css/app.min.css">
-    <link rel="stylesheet" href="../assets/bundles/datatables/dataTables.min.css">
-    <link rel="stylesheet" href="../assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/components.css">
@@ -494,7 +492,6 @@ include('cekadmin.php');
     </div>
 
     <script src="../assets/js/jquery-3.2.1.min.js"></script>
-    <!-- <script src="../assets/bundles/bootstrap/js/bootstrap.min.js"></script> -->
     <script type="text/javascript">
     $(function () {
         $("#status").change(function () {

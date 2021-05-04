@@ -1,42 +1,61 @@
 <?php
+    session_start();
     include "../koneksi.php";
-    include "excel_reader2.php";
-?>
+    require '../vendor/autoload.php';
+ 
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
     
-<?php
-    // upload file xls
-    $target = basename($_FILES['namafile']['name']) ;
-    move_uploaded_file($_FILES['namafile']['tmp_name'], $target);
-    
-    // beri permisi agar file xls dapat di baca
-    chmod($_FILES['namafile']['name'],0777);
-    
-    // mengambil isi file xls
-    $data = new Spreadsheet_Excel_Reader($_FILES['namafile']['name'],false);
-    // menghitung jumlah baris data yang ada
-    $jumlah_baris = $data->rowcount($sheet_index=0);
-    
-    // jumlah default data yang berhasil di import
-    $berhasil = 0;  
-    for ($i=2; $i<=$jumlah_baris; $i++){
-            $nama   = $data->val($i, 1);
-            $jk     = $data->val($i, 2);
-            $tempat = $data->val($i, 3);
-            $tgl    = $data->val($i, 4);
-            $alamat = $data->val($i, 5);
-            $kota   = $data->val($i, 6);
-            $agama  = $data->val($i, 7);
+    if(isset($_POST['upload']))
+    {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(true);
+        // lokasi file excel
+        $targetPath = $_FILES['namafile']['tmp_name'];
+        $spreadsheet = $reader->load($targetPath);
+
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        // hapus baris pertama
+        unset($rows[0]);
+
+        $tz = 'Asia/Jakarta';
+        $dt = new DateTime("now", new DateTimeZone($tz));
+        $timestamp = $dt->format('Y-m-d G:i:s');
             
-            if($nama != "" && $jk !="" && $tempat !="" && $tgl !="" && $alamat !="" && $kota !="" && $agama !=""){
-                // input data ke database (table murid)
-                mysqli_query($koneksi, "INSERT INTO murid VALUES ('', '$nama', '$jk', '$tempat', '$tgl', '$alamat', '$kota', '$agama')");
-                $berhasil++;
+        foreach($rows as $key => $value)
+        {
+            $checkStudent = "SELECT id FROM murid WHERE id='$value[0]' ";
+            $checkStudent_result = mysqli_query($koneksi, $checkStudent);
+            
+            if(mysqli_num_rows($checkStudent_result) > 0)
+            {
+                // Already Exists means please 
+                $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[3])->format('Y-m-d');
+                $up_query = "UPDATE murid SET nama_lengkap = '$value[1]', jenis_kelamin = '$value[2]', tgl_lahir = '$date', email = '$value[4]', telepon = '$value[5]', profesi = '$value[6]', jenjang = '$value[7]', sekolah = '$value[8]', domisili = '$value[9]', created_at = '$timestamp' WHERE id ='$value[0]' ";
+                $up_result = mysqli_query($koneksi, $up_query);
+                $msg = 1;
             }
+            else
+            {
+                // New record Insert
+                // format tanggal
+                $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[3])->format('Y-m-d');
+                $in_query = "INSERT INTO murid VALUES (null, '$value[1]', '$value[2]', '$date', '$value[4]', '$value[5]', '$value[6]', '$value[7]', '$value[8]', '$value[9]', '$timestamp')";
+                $in_result = mysqli_query($koneksi, $in_query);
+                $msg = 1;
+            }
+            if(isset($msg))
+            {
+                $_SESSION['status'] = "File imported successfully!";
+                header("Location: murid.php");
+            }
+            else
+            {
+                $_SESSION['status'] = "File importing failed!";
+                header("Location: murid.php");
+            }
+        }
     }
-    
-    // hapus kembali file .xls yang di upload tadi
-        unlink($_FILES['namafile']['name']);
-    
-    // alihkan halaman ke index.php
-        header("location:lihat_hasil2.php?berhasil=$berhasil");
 ?>

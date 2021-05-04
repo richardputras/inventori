@@ -64,6 +64,10 @@ if ($_POST['id']) {
 			      <td>' . $row_view['lokasi'] . '</td>
             </tr>
             <tr>
+			      <th>KETERANGAN</th>
+			      <td>' . $row_view['keterangan'] . '</td>
+            </tr>
+            <tr>
 			      <th>GARANSI</th>
 			      <td>' . $row_view['garansi'] . '</td>
 			   </tr>

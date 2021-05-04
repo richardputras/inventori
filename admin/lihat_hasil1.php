@@ -102,7 +102,7 @@ include('cekadmin.php');
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>Data Kelas</h3>
-                    <a href="../">Kembali</a>
+                    <a href="../admin/kelas.php">Kembali</a>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -110,10 +110,9 @@ include('cekadmin.php');
                         <thead>
                           <tr>
                             <th class="text-center">No.</th>
-                            <th class="text-center">Hari/Tanggal</th>
-                            <th class="text-center">Jam</th>
+                            <th class="text-center">Judul</th>
+                            <th class="text-center">Tanggal</th>
                             <th class="text-center">Jumlah Murid</th>
-                            <th class="text-center">Judul/Topik</th>
                             <th class="text-center">Harga</th>
                           </tr>
                         </thead>
@@ -122,17 +121,16 @@ include('cekadmin.php');
                          <?php
                           include '../koneksi.php';
                           
-                          $query = "SELECT * FROM kelas";
+                          $query = "SELECT * FROM kelas ORDER BY tanggal ASC";
                           $result = mysqli_query($koneksi, $query);
                           $no = 1;
                           while ($row = mysqli_fetch_array($result)) {
                           ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
-                              <td align="center"><?php echo $row['hari'] ." / ". $row['tanggal']; ?></td>
-                              <td align="center"><?php echo $row['jam']; ?></a></td>
+                              <td align="center"><?php echo $row['judul']; ?></td>
+                              <td align="center"><?php echo date('d-m-Y', strtotime($row['tanggal'])); ?></td>
                               <td align="center"><?php echo $row['jumlah_murid']; ?></td>
-                              <td align="center"><?php echo $row['judul'] ." , ". $row['topik']; ?></td>
                               <td align="center"><?php echo $row['harga']; ?></a></td>
                             </tr> 
                           <?php

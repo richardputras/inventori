@@ -1,65 +1,61 @@
 <?php
+    session_start();
     include "../koneksi.php";
-    include "../libraries/ExcelReader/excel_reader2.php";
-    
-    if ($_POST['upload'] == "upload") {
-        $type = explode(".",$_FILES['namafile']['name']);
+    require '../vendor/autoload.php';
+ 
+    use PhpOffice\PhpSpreadsheet\Spreadsheet;
+    use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+ 
+    if(isset($_POST['upload']))
+    {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(true);
+        // lokasi file excel
+        $targetPath = $_FILES['namafile']['tmp_name'];
+        $spreadsheet = $reader->load($targetPath);
         
-        if (empty($_FILES['namafile']['name'])) {
-            ?>
-                <script language="JavaScript">
-                    alert('Oops! Please select file ...');
-                    document.location='./';
-                </script>
-            <?php
-        }
-        else if(strtolower(end($type)) !='xls'){
-            ?>
-                <script language="JavaScript">
-                    alert('Oops! Please upload only Excel XLS file ...');
-                    document.location='./';
-                </script>
-            <?php
-        }
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        // hapus baris pertama
+        unset($rows[0]);
+
+        $tz = 'Asia/Jakarta';
+        $dt = new DateTime("now", new DateTimeZone($tz));
+        $timestamp = $dt->format('Y-m-d G:i:s');
         
-        else{
-        $target = basename($_FILES['namafile']['name']) ;
-        move_uploaded_file($_FILES['namafile']['tmp_name'], $target);
-    
-        $data = new Spreadsheet_Excel_Reader($_FILES['namafile']['name'],false);
-    
-        $baris = $data->rowcount($sheet_index=0);
-    
-        for ($i=2; $i<=$baris; $i++){
-            $id     = $data->val($i, 1);
-            $nama   = $data->val($i, 2);
-            $jk     = $data->val($i, 3);
-            $tempat = $data->val($i, 4);
-            $tgl    = $data->val($i, 5);
-            $alamat = $data->val($i, 6);
-            $kota   = $data->val($i, 7);
-            $agama  = $data->val($i, 8);
+        foreach($rows as $key => $value)
+        {
+            $checkTuton = "SELECT id FROM tuton WHERE id='$value[0]' ";
+            $checkTuton_result = mysqli_query($koneksi, $checkTuton);
             
-            $query = mysqli_query("INSERT INTO murid (id, nama_lengkap, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama) VALUES ('$id', '$nama', '$jk', '$tempat', '$tgl', '$alamat', '$kota', '$agama')");        
-        }
-    
-            if(!$query){
-                ?>
-                    <script language="JavaScript">
-                        alert('<b>Oops!</b> 404 Error Server.');
-                        document.location='./';
-                    </script>
-                <?php
+            if(mysqli_num_rows($checkTuton_result) > 0)
+            {
+                // Already Exists means please 
+                $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[5])->format('Y-m-d');
+                $up_query = "UPDATE tuton SET nama = '$value[1]', jenis_tuton = '$value[2]',  mapel = '$value[3]', tempat_lahir = '$value[4]', tgl_lahir = '$date', jk = '$value[6]', agama = '$value[7]', min_income = '$value[8]', max_income = '$value[9]', durasi = '$value[10]', jenjang = '$value[11]', referensi = '$value[12]', email = '$value[13]', status = '$value[14]', created_at = '$timestamp' WHERE id ='$value[0]' ";
+                $up_result = mysqli_query($koneksi, $up_query);
+                $msg = 1;
             }
-            else{
-                ?>
-                    <script language="JavaScript">
-                        alert('Good! Import Excel file success...');
-                        document.location='./';
-                    </script>
-                <?php
+            else
+            {
+                // New record Insert
+                // format tanggal
+                $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value[5])->format('Y-m-d');
+                $in_query = "INSERT INTO tuton VALUES (null, '$value[1]', '$value[2]', '$value[3]', '$value[4]', '$date', '$value[6]', '$value[7]', '$value[8]', '$value[9]', '$value[10]', '$value[11]', '$value[12]', '$value[13]', '$value[14]', '$timestamp')";
+                $in_result = mysqli_query($koneksi, $in_query);
+                $msg = 1;
             }
-        unlink($_FILES['namafile']['name']);
+            if(isset($msg))
+            {
+                $_SESSION['status'] = "File imported successfully!";
+                header("Location: tuton.php");
+            }
+            else
+            {
+                $_SESSION['status'] = "File importing failed!";
+                header("Location: tuton.php");
+            }
         }
     }
 ?>

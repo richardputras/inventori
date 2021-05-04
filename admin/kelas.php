@@ -84,7 +84,7 @@ include('cekadmin.php');
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
-                <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
+                <!-- <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li> -->
                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                 <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
@@ -140,6 +140,12 @@ include('cekadmin.php');
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
+                      <?php
+                      if(isset($_SESSION['status'])){
+                        echo "<h5>".$_SESSION['status']."</h5>";
+                        unset($_SESSION['status']);
+                      }
+                      ?>
                       <form action="import_excel1.php" method="POST" enctype="multipart/form-data" >
                         <table border="0" class="table">
                             <tr>
@@ -171,22 +177,13 @@ include('cekadmin.php');
                         </thead>
 
                         <tbody>
-                         <?php
-                          include '../koneksi.php';
-                          
-
-                          $query = "SELECT * FROM kelas";
-                          $result = mysqli_query($koneksi, $query);
-                          $no = 1;
-                          while ($row = mysqli_fetch_array($result)) {
-                          ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
                               <td align="center"><?php echo $row['hari'] ." / ". $row['tanggal']; ?></td>
                               <td align="center"><?php echo $row['jam']; ?></a></td>
                               <td align="center"><?php echo $row['jumlah_murid']; ?></td>
                               <td align="center"><?php echo $row['judul']; ?></td>
-                              <!-- <td align="center">
+                              <td align="center">
                                 <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#updatekelas<?php echo $row['id_kelas']; ?>">
                                   <i class="fa fa-edit"></i></a>
                                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deletekelas<?php echo $row['id_kelas']; ?>">
@@ -211,12 +208,10 @@ include('cekadmin.php');
                                     </div>
                                   </div>
                                 </div>
-                              </div><!-- modal delete -->
+                              </div> modal delete -->
                         <!-- </tr> 
-                        <?php
-                          }
-                        ?> -->
-                        <!-- <div class="example-modal">
+                        
+                        <div class="example-modal">
                             <div id="addkelas" class="modal fade" role="dialog" style="display:none;">
                               <div class="modal-dialog">
                                 <div class="modal-content">

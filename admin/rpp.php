@@ -84,7 +84,7 @@ include('cekadmin.php');
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
-                <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
+                <!-- <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li> -->
                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                 <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
@@ -140,6 +140,12 @@ include('cekadmin.php');
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
+                      <?php
+                      if(isset($_SESSION['status'])){
+                        echo "<h5>".$_SESSION['status']."</h5>";
+                        unset($_SESSION['status']);
+                      }
+                      ?>
                       <form action="import_excel3.php" method="POST" enctype="multipart/form-data" >
                         <table border="0" class="table">
                             <tr>
@@ -173,15 +179,7 @@ include('cekadmin.php');
                         </thead>
 
                         <tbody>
-                          <?php
-                          include '../koneksi.php';
                           
-
-                          $query = "SELECT * FROM rpp";
-                          $result = mysqli_query($koneksi, $query);
-                          $no = 1;
-                          while ($row = mysqli_fetch_array($result)) {
-                          ?>
                             <tr>
                               <td align="center"><?php echo $no++; ?></td>
                               <td align="center"><?php echo $row['mapel']; ?></td>
@@ -197,7 +195,7 @@ include('cekadmin.php');
                                   <i class="fa fa-trash"></i></a>
                               </td>
 
-                              <!-- modal delete -->
+                              modal delete -->
                               <!-- <div class="example-modal">
                                 <div id="deleterpp<?php echo $row['id']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
@@ -215,7 +213,7 @@ include('cekadmin.php');
                                     </div>
                                   </div>
                                 </div>
-                              </div><!-- modal delete -->
+                              </div> modal delete -->
                               
                               <!-- <div class="example-modal">
                                 <div id="updaterpp<?php echo $row['id']; ?>" class="modal fade" tabindex="-1" role="dialog" style="display:none;">
@@ -285,11 +283,9 @@ include('cekadmin.php');
                                     </div>
                                   </div>
                                 </div>
-                              </div> -->
-                            </tr>
-                        <?php
-                          }
-                        ?>
+                              </div>
+                            </tr> -->
+                        
                               <!-- <div class="example-modal">
                                 <div id="addrpp" class="modal fade" role="dialog" style="display:none;">
                                   <div class="modal-dialog" role="document">
@@ -484,10 +480,10 @@ include('cekadmin.php');
                                     </div>
                                   </div>
                                 </div>
-                              </div> -->
+                              </div>
                         </tbody>
-                      </table>
-                  </div>
+                      </table> -->
+                    </div>
                 </div>
               </div>
             </div>
@@ -499,65 +495,22 @@ include('cekadmin.php');
           <footer>&copy; Copyright 2020 PT. SAKTI</footer>
         </div>
       </footer>
-    </div>
+  </div>
     
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    
-    <script>
-    $(document).ready(function(){
-        $("#jenjang").click(function () {
-            if ($(this).val() == "SD") {
-                $("#kelassd").show();
-                $("#mapelsd").show();
-                $("#kelassmp").hide();
-                $("#mapelsmp").hide();
-                $("#kelassma").hide();
-                $("#mapelsma").hide();
-            } else if ($(this).val() == "SMP") {
-                $("#kelassd").hide();
-                $("#mapelsd").hide();
-                $("#kelassmp").show();
-                $("#mapelsmp").show();
-                $("#kelassma").hide();
-                $("#mapelsma").hide();
-            } else if ($(this).val() == "SMA") {
-                $("#kelassd").hide();
-                $("#mapelsd").hide();
-                $("#kelassmp").hide();
-                $("#mapelsmp").hide();
-                $("#kelassma").show();
-                $("#mapelsma").show();
-            }
-            else{
-                $("#kelassd").hide();
-                $("#kelassmp").hide();
-                $("#kelassma").hide();
-                $("#mapelsd").hide();
-                $("#mapelsmp").hide();
-                $("#mapelsma").hide();
-            }
-        });
-    });
-    </script>
-    
-    <script>
-    $(document).ready(function(){
-        $('#table-rpp').DataTable();
-    });
-    </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <!-- General JS Scripts -->
-    <script src="../assets/js/app.min.js"></script>
-    <!-- JS Libraies -->
-    <script src="../assets/bundles/datatables/datatables.min.js"></script>
-    <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../assets/bundles/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Page Specific JS File -->
-    <script src="../assets/js/page/datatables.js"></script>
-    <!-- Template JS File -->
-    <script src="../assets/js/scripts.js"></script>
-    <!-- Custom JS File -->
-    <script src="../assets/js/custom.js"></script>
+  <!-- General JS Scripts -->
+  <script src="../assets/js/app.min.js"></script>
+  <!-- JS Libraies -->
+  <script src="../assets/bundles/datatables/datatables.min.js"></script>
+  <script src="../assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/bundles/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Page Specific JS File -->
+  <script src="../assets/js/page/datatables.js"></script>
+  <!-- Template JS File -->
+  <script src="../assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="../assets/js/custom.js"></script>
 </body>
 
 </html>

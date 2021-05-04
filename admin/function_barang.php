@@ -34,7 +34,7 @@ if ($_GET['act'] == 'addbarang') {
         // Proses upload
 
         if (empty($tmp_file)) {
-            $querytambah = mysqli_query($koneksi, "INSERT INTO barang(id_barang, kode_barang, nama_barang, harga_beli, harga_jual, eks_harga_jual, deskripsi, qty, satuan, tgl_bayar, tgl_terima, kondisi_barang, status_barang, lokasi, jadwal_perbaikan, garansi, kategori, keterangan, id_pemegang, id_supplier) VALUES(NULL, '$kode' , '$namabrg', '$hargabeli', '$hargajual', '$ekshargajual', '$deskripsi', '" . $nama_file . "', '$qty', '$satuan', '$tglbeli', '$tglterima', '$kondisi', '$status', '$lokasi', '$jadwal', '$garansi', '$kat', '$ket', '$pemegang', '$supplier')");
+            $querytambah = mysqli_query($koneksi, "INSERT INTO barang(id_barang, kode_barang, nama_barang, harga_beli, harga_jual, eks_harga_jual, deskripsi, foto, nama_foto, qty, satuan, tgl_bayar, tgl_terima, kondisi_barang, status_barang, lokasi, jadwal_perbaikan, garansi, kategori, keterangan, id_pemegang, id_supplier) VALUES(NULL, '$kode' , '$namabrg', '$hargabeli', '$hargajual', '$ekshargajual', '$deskripsi', NULL, '" . $nama_file . "', '$qty', '$satuan', '$tglbeli', '$tglterima', '$kondisi', '$status', '$lokasi', '$jadwal', '$garansi', '$kat', '$ket', '$pemegang', '$supplier')");
 
             if ($querytambah) {
                 echo "<script> alert('Selamat, data $namabrg berhasil ditambahkan.');

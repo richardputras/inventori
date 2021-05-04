@@ -122,6 +122,7 @@ include('cekadmin.php');
                     </ul>
                 </aside>
             </div>
+            
             <!-- Main Content -->
             <div class="main-content">
                 <section class="content">
@@ -175,7 +176,16 @@ include('cekadmin.php');
                                                             <td align="center"><?php echo $row['nama_barang']; ?></td>
                                                             <td align="center"><?php echo $row['qty']; ?></td>
                                                             <td align="center"><?php echo "IDR " . number_format($row['harga_beli'], 2, ",", "."); ?></td>
-                                                            <td align="center"><?= date('d-m-Y', strtotime($row['tgl_bayar'])); ?></td>
+                                                            <td align="center">
+                                                            <?php
+                                                                if($row['tgl_bayar']=="0000-00-00"){ 
+                                                                   echo " "; 
+                                                                }
+                                                                else{
+                                                                   echo date('d-m-Y', strtotime($row['tgl_bayar'])); 
+                                                                } 
+                                                            ?>
+                                                            </td>
                                                             <td align="center"><?php echo $row['kategori']; ?></td>
                                                             <td align="center"><a href="#show1" class="viewdata btn btn-primary btn-xs" data-toggle="modal" id="<?php echo $row['id_barang']; ?>"><?php echo $row['nama_depan']; ?></td>
                                                             <td align="center"><?php echo $row['lokasi']; ?></td>
@@ -696,10 +706,10 @@ include('cekadmin.php');
             if ($(this).val() == "Beli baru" || $(this).val() == "Beli bekas") {
                 $("#hargabeli").show();
                 $("#tglbeli").show();
+                $("#tglterima").show();
                 $("#supplier").show();
                 $("#hargajual").hide();
                 $("#ekshargajual").hide();
-                $("#tglterima").hide();
             } else if ($(this).val() == "Perlu dijual") {
                 $("#hargabeli").hide();
                 $("#hargajual").hide();

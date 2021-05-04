@@ -84,7 +84,7 @@ include('cekadmin.php');
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="user.php">Data Pengguna</a></li>
                 <li><a class="nav-link" href="karyawan.php">Data Karyawan</a></li>
-                <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li>
+                <!-- <li><a class="nav-link" href="jabatan.php">Data Jabatan</a></li> -->
                 <li><a class="nav-link" href="barang.php">Data Barang</a></li>
                 <li><a class="nav-link" href="supplier.php">Data Supplier</a></li>
                 <li><a class="nav-link" href="rpp.php">Data RPP</a></li>
@@ -140,6 +140,12 @@ include('cekadmin.php');
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
+                      <?php
+                      if(isset($_SESSION['status'])){
+                        echo "<h5>".$_SESSION['status']."</h5>";
+                        unset($_SESSION['status']);
+                      }
+                      ?>
                       <form action="import_excel4.php" method="POST" enctype="multipart/form-data" >
                         <table border="0" class="table">
                             <tr>

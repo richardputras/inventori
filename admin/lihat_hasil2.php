@@ -102,20 +102,19 @@ include('cekadmin.php');
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>Data Murid</h3>
-                    <a href="../">Kembali</a>
+                    <a href="../admin/murid.php">Kembali</a>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover" id="table-murid">
                         <thead>
                           <tr>
-                          <th class="text-center">No.</th>
-                          <th class="text-center">Nama Lengkap</th>
+                            <th class="text-center">No.</th>
+                            <th class="text-center">Nama Lengkap</th>
                             <th class="text-center">Jenis Kelamin</th>
-                            <th class="text-center">Tempat/Tgl Lahir</th>
+                            <th class="text-center">Tgl Lahir</th>
                             <th class="text-center">Usia</th>
-                            <th class="text-center">Alamat/Kota</th>
-                            <th class="text-center">Agama</th>
+                            <th class="text-center">Domisili</th>
                           </tr>
                         </thead>
 
@@ -123,7 +122,7 @@ include('cekadmin.php');
                           <?php
                           include '../koneksi.php';
 
-                          $query = "SELECT nama_lengkap, jenis_kelamin, tempat_lahir, tgl_lahir, alamat, kota, agama, TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia FROM murid";
+                          $query = "SELECT *, TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) AS usia FROM murid";
                           $result = mysqli_query($koneksi, $query);
                           $no = 1;
                           
@@ -133,10 +132,9 @@ include('cekadmin.php');
                               <td align="center"><?php echo $no++; ?></td>
                               <td align="center"><?php echo $row['nama_lengkap']; ?></td>
                               <td align="center"><?php echo $row['jenis_kelamin']; ?></a></td>
-                              <td align="center"><?php echo $row['tempat_lahir'] ." / ". $row['tgl_lahir']; ?></td>
+                              <td align="center"><?php echo $row['tgl_lahir']; ?></td>
                               <td align="center"><?php echo $row['usia'] ." tahun" ?></td>
-                              <td align="center"><?php echo $row['alamat'] .", ". $row['kota']; ?></td>
-                              <td align="center"><?php echo $row['agama']; ?></td>
+                              <td align="center"><?php echo $row['domisili']; ?></td>
                             </tr> 
                           <?php
                           }
